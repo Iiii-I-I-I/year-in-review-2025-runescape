@@ -1,0 +1,1042 @@
+/* ------------
+      BASICS
+   ------------ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    --font-stack: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+
+    --bg-01: hsl(200, 70.21%, 6.76%);
+    --bg-02: hsl(198, 42%, 17%);
+    --bg-03: hsl(201, 26.18%, 26.15%);
+
+    --text-01: hsl(197, 9.18%, 87.89%);
+    --text-02: hsl(195, 16.34%, 79.68%);
+    --text-03: hsl(198, 8.37%, 63.99%);
+
+    --border-01: hsl(210, 15.94%, 34.5%);
+    --border-radius: 1em;
+
+    --shadow-01:
+        0 30px 60px -8px rgba(50, 50, 93, .2),
+        0 18px 36px -10px rgba(0, 0, 0, .3),
+        0 -12px 36px -6px rgba(0, 0, 0, .05);
+    --shadow-02:
+        0 6px 10px -4px rgba(0, 0, 0, .3),
+        0 12px 30px -8px rgba(0, 0, 0, .15);
+    --shadow-03:
+        0 4px 8px -4px rgba(0, 0, 0, .15),
+        0 12px 24px 0 rgba(0, 0, 0, .1);
+    --inset-border:
+        0px 1px 0px 0px rgba(255, 255, 255, 0.08) inset,
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+
+    --anim-length: 10px;
+    --anim-slow: 325ms;
+    --anim-med: 225ms;
+    --anim-fast: 125ms;
+
+    --ease-in-out-expo: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-in-out-quad: cubic-bezier(0.46, 0.03, 0.52, 0.96);
+    --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+body {
+    font: 1em/1.6 var(--font-stack);
+    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+    color: var(--text-02);
+    background-color: var(--bg-02);
+    margin: 0;
+}
+
+@supports (font-variation-settings: normal) {
+    body {
+        --font-stack: 'InterVariable', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+    }
+}
+
+h1 {
+    color: var(--text-01);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin: 0;
+}
+
+h2 {
+    color: var(--text-01);
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: -0.017em;
+    line-height: 1.2;
+    margin: 0 0 1.25rem;
+}
+
+h3 {
+    color: var(--text-01);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+}
+
+p {
+    margin: 0 0 1em;
+    letter-spacing: -0.005em;
+}
+
+strong {
+    color: var(--text-01);
+}
+
+.link {
+    color: hsl(203.11, 100%, 70.25%);
+    text-decoration: none;
+    cursor: pointer; /* for non-<a> links */
+}
+
+.link:hover,
+.link:focus {
+    text-decoration: underline;
+}
+
+/* hide focus ring when using a mouse (but keep it for keyboard navigation)
+   using polyfill from <https://github.com/WICG/focus-visible> */
+.js-focus-visible :focus:not(.focus-visible) {
+    outline: none;
+}
+
+.button {
+    font-family: inherit;
+    font-size: 1em;
+    border: none;
+    border-radius: calc(var(--border-radius) * .8);
+    transition: filter .2s ease;
+    cursor: pointer;
+}
+
+.button:hover,
+.button:focus {
+    filter: brightness(.96) saturate(1.5);
+}
+
+@media screen and (prefers-reduced-motion) {
+    body {
+        --anim-length: 0;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    html {
+        font-size: 17px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    html {
+        font-size: 18px;
+    }
+}
+
+/* --------------
+       HEADER
+   -------------- */
+
+header {
+    --header-size: 4.25rem;
+
+    display: flex;
+    height: 100vh;
+    background-color: var(--bg-01);
+    background: linear-gradient(var(--bg-01), var(--bg-02));
+    /* border-bottom: 1px solid var(--border-01); */
+}
+
+.title {
+    margin: auto;
+    text-align: center;
+    transform: skew(0, -6deg)
+}
+
+.title > span {
+    display: block;
+}
+
+.title .top,
+.title .bottom {
+    color: transparent;
+    background: linear-gradient(70deg, #2e84b9 15%, #6a981c, #d1802b 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.title .top {
+    font-size: calc(var(--header-size) * 0.875);
+    letter-spacing: 1px;
+}
+
+.title .center {
+    font-size: calc(var(--header-size) * 4.1);
+    letter-spacing: -0.05em;
+    margin: -0.05em 0;
+}
+
+.title .bottom {
+    font-size: calc(var(--header-size) * 1.12);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+@media screen and (max-width: 900px), screen and (max-height: 900px) {
+    header {
+        --header-size: 8vmin;
+    }
+}
+
+/* ------------
+       MAIN
+   ------------ */
+
+.container {
+    max-width: 800px;
+    padding: 0 2em 8rem;
+    margin: auto;
+}
+
+/* --------------
+      SECTIONS
+   -------------- */
+
+section,
+.section {
+    border-top: 1px solid var(--border-01);
+    padding-top: 7rem;
+}
+
+section + section {
+    margin-top: 7rem;
+}
+
+section h2,
+section .link {
+    color: var(--section-color, var(--text-01));
+}
+
+.section-traffic {
+    --section-color: hsl(18.65, 91.72%, 63.78%);
+}
+
+.section-community {
+    --section-color: hsl(139.76, 69.67%, 47.84%);
+}
+
+.section-milestones {
+    --section-color: hsl(203.11, 100%, 70.25%);
+}
+
+.section-closing .link {
+    /* --section-color: hsl(48.5, 75.9%, 64.74%); */
+    --section-color: hsl(203.11, 100%, 70.25%);
+}
+
+/* --------------
+     MILESTONES
+   -------------- */
+
+.milestone-list {
+    position: relative;
+    list-style: none;
+    padding: 30px 0 15px 45px;
+}
+
+/* the vertical line */
+.milestone-list::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 13px;
+    width: 2px;
+    height: calc(100% - 5px);
+    /*  fade in the ends of the line using pixel values (instead of percentages)
+        with help from <https://stackoverflow.com/a/30425097> */
+    background:
+        linear-gradient(to bottom, var(--bg-02), var(--bg-02) 5px, var(--border-01) 50px) top no-repeat,
+        linear-gradient(to top, var(--bg-02), var(--bg-02) 5px, var(--border-01) 50px) bottom no-repeat;
+    background-size: 100% 50%;
+}
+
+/* the dot */
+.milestone-list li {
+    position: relative;
+}
+
+.milestone-list li + li {
+    margin-top: 3em;
+}
+
+.milestone-list li::before {
+    position: absolute;
+    top: 33px;
+    left: -38px;
+
+    content: '';
+    width: 14px;
+    height: 14px;
+    background-color: var(--text-03);
+    border-radius: 50%;
+}
+
+.milestone-date {
+    color: var(--text-03);
+}
+
+.milestone-list h3 {
+    margin-bottom: .5em;
+}
+
+/* ------------
+       TABS
+   ------------ */
+
+.tab-container {
+    margin-top: 3em;
+}
+
+.tab-list {
+    --tab-count: 3;
+    --tab-gap: .45em;
+    --border-radius: 75em;
+    --alpha: 0.8;
+
+    display: flex;
+    position: sticky;
+    top: 2vh;
+    z-index: 1000;
+
+    background-color: hsla(from var(--bg-01) h s l / 0.65);
+    backdrop-filter: blur(.8em);
+    border-radius: calc(var(--border-radius) + var(--tab-gap));
+    box-shadow: var(--shadow-01);
+
+    margin: 2em auto 7rem;
+    max-width: 26em;
+}
+
+.tab-list::before {
+    content: '';
+    position: absolute;
+    top: var(--tab-gap);
+    left: var(--tab-gap);
+    height: calc(100% - var(--tab-gap) * 2);
+    width: calc(100% / var(--tab-count) - var(--tab-gap) * 2);
+    transform: translateX(calc(var(--index) * 100% + var(--index) * var(--tab-gap) * 2));
+    transition: transform calc(var(--anim-slow) + var(--anim-fast)) var(--ease-in-out-expo);
+
+    background-color: var(--bg-03);
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .1), var(--inset-border);
+}
+
+.tab {
+    width: calc(100% / var(--tab-count));
+    transition: color calc(var(--anim-slow) + var(--anim-fast)) ease-in-out;
+    z-index: 1;
+
+    color: var(--text-03);
+    font: .9rem/1.45 var(--font-stack); /* override default button styles */
+    background: none;
+    border: none;
+    padding: 1.15em;
+}
+
+.tab[aria-selected="true"] {
+    color: var(--text-01);
+}
+
+.label-short {
+    display: none;
+}
+
+.tab-panel {
+    transform: translate3d(0, 0, 0);
+    animation-fill-mode: both;
+    animation-timing-function: var(--ease-in-out-quad);
+}
+
+/* added via hideAndSlide() in main.js */
+.slide-left-fade-in {
+    animation-name: enter-left, fade-in;
+    animation-duration: var(--anim-slow);
+}
+
+.slide-left-fade-out {
+    animation-name: exit-left, fade-out;
+    animation-duration: var(--anim-fast);
+}
+
+.slide-right-fade-in {
+    animation-name: enter-right, fade-in;
+    animation-duration: var(--anim-slow);
+}
+
+.slide-right-fade-out {
+    animation-name: exit-right, fade-out;
+    animation-duration: var(--anim-fast);
+}
+
+@media screen and (max-width: 550px) {
+    .label-long {
+        display: none;
+    }
+
+    .label-short {
+        display: inline;
+    }
+}
+
+/* ------------
+       STATS
+   ------------ */
+
+.stats-grid {
+    --breakout-margin: 0;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1em;
+    /* margin: 0 var(--breakout-margin); */
+}
+
+.stat {
+    background-color: var(--bg-03);
+    padding: 1.2em 1.25em;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-03), var(--inset-border);
+}
+
+.stat-icon {
+    display: block;
+    width: 25px;
+    height: 25px;
+    color: var(--text-02);
+    margin-bottom: 1em;
+}
+
+.stat-value {
+    color: var(--section-color);
+    font-size: 3em;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.stat strong {
+    color: var(--section-color);
+}
+
+.stat abbr {
+    color: inherit;
+    margin-left: .02ch;
+}
+
+.stat-description {
+    font-size: .9em;
+    margin-top: 1em;
+}
+
+/* browser/country stats */
+.stat ol {
+    margin: .5em 0 0;
+    padding-left: 0;
+}
+
+.stat li {
+    display: flex;
+    justify-content: space-between;
+    font-size: .85em;
+    background-color: var(--bg-01);
+    border-radius: calc(var(--border-radius) * .5);
+
+    position: relative;
+    padding: .05em .5em;
+    list-style: none;
+    overflow: hidden;
+}
+
+.stat li + li {
+    margin-top: .4em;
+}
+
+.stat li span {
+    color: var(--text-01);
+    mix-blend-mode: luminosity;
+    z-index: 1;
+}
+
+.stat li span:last-of-type {
+    color: #63686b;
+}
+
+.stat li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, var(--section-color) var(--bar-size), transparent 0);
+    filter: brightness(0.6) saturate(0.8);
+}
+
+@media screen and (max-width: 501px) {
+    .container,
+    .wiki-cards {
+        padding: 0 1em;
+    }
+
+    .container {
+        margin-top: 5em;
+    }
+
+    .stats-grid {
+        grid-template-columns: none;
+    }
+
+    .stat {
+        padding: 1.25em 1.5em;
+    }
+
+    .stat dt {
+        float: left;
+        margin: -0.25rem 1.5rem 0 0;
+    }
+
+    .change {
+        clear: both;
+    }
+
+    .stat-icon {
+        display: none;
+    }
+}
+
+/* --------------
+       DYGRAPH
+   -------------- */
+
+.dygraph-container {
+    --range-pad: 7px; /* must be >= xRangePad option for dygraph in main.js */
+
+    background-color: var(--bg-03);
+    border-radius: var(--border-radius);
+    padding: 1.5em 1.4em 1.25em 1.6em;
+    margin: 3em 0;
+    box-shadow: var(--shadow-03), var(--inset-border);
+    position: relative;
+}
+
+.dygraph-graph {
+    position: relative; /* for .dygraph-y-labels */
+}
+
+.dygraph-title {
+    font-size: .95em;
+    font-weight: bold;
+    margin: 0 0 .25em var(--range-pad);
+}
+
+.dygraph-legend {
+    position: absolute;
+    font-size: .8rem;
+    background-color: var(--bg-03);
+    padding: 6px 8px 8px var(--range-pad);
+    line-height: 1.4;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+.dygraph-legend-date {
+    font-weight: bold;
+}
+
+.dygraph-legend-change {
+    color: var(--text-03);
+}
+
+.dygraph-x-labels {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 8px);
+    font-size: .8rem;
+    margin-top: .5em;
+    margin-left: 4px;
+}
+
+.x-label {
+    flex: 1;
+    text-align: center;
+}
+
+.short-month {
+    display: none;
+}
+
+.dygraph-y-labels {
+    position: absolute;
+    pointer-events: none;
+    bottom: 0;
+}
+
+.traffic .dygraph-y-labels {
+    right: calc(var(--range-pad) + 5px);
+}
+
+.site-speed .dygraph-y-labels,
+.edits .dygraph-y-labels {
+    left: var(--range-pad);
+}
+
+.y-label {
+    display: flex;
+    font-size: .7rem;
+    color: var(--text-03);
+    letter-spacing: .05ch;
+    opacity: .8;
+}
+
+.traffic .y-label {
+    align-items: flex-end;
+    justify-content: flex-end;
+    height: calc(300px / 6.5);
+}
+
+.edits .y-label {
+    align-items: flex-end;
+    /* justify-content: flex-end; */
+    height: calc(300px / 4.6);
+}
+
+.site-speed .y-label {
+    align-items: flex-end;
+    height: calc(300px / 5);
+}
+
+/* hide first label when legend is showing so bottom half doesn't peek out */
+.site-speed .dygraph-graph:hover .y-label:first-child {
+    display: none;
+}
+
+.site-speed-avg {
+    position: absolute;
+    top: 43%;
+    left: calc(1.6rem + 4px);
+    right: calc(1.4rem + 6px);
+
+    display: flex;
+    justify-content: flex-end;
+    font-size: .7rem;
+    border-bottom: 2px dashed rgba(244, 129, 33, .5);
+    pointer-events: none;
+}
+
+.dygraph-annotation {
+    --tip-color: var(--bg-02);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 2;
+
+    color: white !important; /* override inline style */
+    font-weight: bold;
+    line-height: 1;
+    background-color: var(--tip-color);
+    border: none !important; /* override inline style */
+    border-radius: 10em;
+    cursor: default; /* don't want text cursor appearing */
+}
+
+.tooltip {
+    position: absolute;
+    left: calc(-100px + 12px); /* half of tooltip width + half of annotation width */
+    bottom: 0;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition: .25s var(--ease-out-quad);
+    z-index: 2;
+
+    background-color: var(--tip-color);
+    font-weight: normal;
+    text-align: left;
+    line-height: 1.3;
+    border-radius: calc(var(--border-radius) * .7);
+    width: 200px;
+    padding: .6em .9em;
+    pointer-events: none;
+    box-shadow: var(--shadow-02);
+}
+
+.tooltip-date {
+    font-weight: bold;
+    margin-bottom: .1em;
+}
+
+.tooltip-hidden .tooltip {
+    opacity: 0;
+    transform: translateY(-3px);
+}
+
+@media screen and (max-width: 600px) {
+    .dygraph-graph {
+        height: 250px !important;
+    }
+
+    .short-month {
+        display: inline;
+    }
+
+    .long-month {
+        display: none;
+    }
+
+    .traffic .y-label {
+        height: calc(250px / 6.5);
+    }
+
+    .site-speed .y-label {
+        height: calc(250px / 5);
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .dygraph-container {
+        padding: 1em;
+    }
+
+    .dygraph-legend {
+        left: 1rem;
+    }
+}
+
+/* --------------
+       ENDING
+   -------------- */
+
+figure {
+    margin: 1em 0 0; /* reverse left/right padding from .milestone-list */
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.picture-container {
+    position: relative;
+    flex: 1;
+}
+
+.picture-container .thumb {
+    cursor: pointer;
+}
+
+.picture-container + .picture-container {
+    margin-left: 1em;
+}
+
+.thumb {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: .5em;
+    box-shadow: var(--shadow-02);
+    margin: auto;
+}
+
+.fullscreen-button {
+    position: absolute;
+    display: flex;
+    top: .5em;
+    right: .5em;
+    width: 34px;
+    height: 34px;
+
+    background-color: white;
+    border-radius: 100%;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+    opacity: 0;
+    transform: translateY(-3px);
+    transition: .25s var(--ease-out-quad);
+    transition-property: opacity, transform;
+    pointer-events: none;
+}
+
+.picture-container:hover .fullscreen-button {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.fullscreen-icon {
+    color: #333;
+    width: 18px;
+    height: 18px;
+    margin: auto;
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    background-color: rgba(0, 0, 0, .9);
+    -webkit-backdrop-filter: blur(7px);
+    backdrop-filter: blur(7px);
+    cursor: pointer;
+    animation: .55s fade-in cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.full-image-container {
+    margin: auto;
+    animation: .55s cubic-bezier(0.22, 1, 0.36, 1);
+    animation-name: scale-up, fade-in;
+}
+
+.full-image {
+    display: block;
+    max-width: 93vw;
+    max-height: 93vh;
+    box-shadow: var(--shadow-02);
+}
+
+.note {
+    color: #999;
+    font-size: .9em;
+    text-align: center;
+    margin-top: .5em;
+}
+
+.signature {
+    text-align: right;
+    margin: 2em 0 4em;
+}
+
+@media screen and (max-width: 425px) {
+    figure {
+        flex-direction: column;
+    }
+
+    .picture-container + .picture-container {
+        margin-top: .9em;
+        margin-left: 0;
+    }
+}
+
+/* -------------
+       CARDS
+   ------------- */
+
+.wiki-cards {
+    display: flex;
+    gap: .8em;
+    margin-top: 2em;
+}
+
+.wiki-card {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 7em;
+    padding: 1em .6em;
+
+    font-size: .9em;
+    text-decoration: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-02);
+
+    transition: var(--anim-med) var(--ease-out-quad);
+    transform: translateZ(0);
+}
+
+.wiki-card:hover {
+    transform: scale(1.05);
+}
+
+/* background image on a pseudo-element so it can be manipulated separately */
+.wiki-card::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+    opacity: 0.6;
+    filter: saturate(0.75);
+    border-radius: var(--border-radius);
+    background-position: center;
+    background-size: cover;
+    /* force GPU to fix filter: causing background-size: to be 1px off */
+    /* transform: translateZ(0); */
+}
+
+.wiki-card span {
+    color: white;
+    font-size: 1.05em;
+    font-weight: bold;
+    line-height: 1.3;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, .5);
+}
+
+.card-rs {
+    background-color: #2e84b9;
+}
+
+.card-rs::before {
+    background-image: url('../images/card-rs.jpg');
+}
+
+.card-osrs {
+    background-color: #b2b548;
+}
+
+.card-osrs::before {
+    background-image: url('../images/card-osrs.jpg');
+}
+
+.card-ptbr {
+    background-color: #d292f3;
+}
+
+.card-ptbr::before {
+    background-image: url('../images/card-ptbr.jpg');
+}
+
+.card-rsc {
+    background-color: #e7a085;
+}
+
+.card-rsc::before {
+    background-image: url('../images/card-rsc.jpg');
+}
+
+@media screen and (max-width: 501px) {
+    .wiki-cards {
+        grid-template-columns: none;
+        grid-gap: 1em;
+    }
+
+    .wiki-card span {
+        font-size: 1.35em;
+    }
+}
+
+@media screen and (min-width: 501px) and (max-width: 900px) {
+    .wiki-cards {
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 1em;
+    }
+
+    .wiki-card span {
+        font-size: 1.25em;
+    }
+}
+
+@media screen and (min-width: 900px) {
+    .wiki-cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* -----------------
+       KEYFRAMES
+   ----------------- */
+
+@keyframes fade-in {
+   0% {
+       opacity: 0;
+   }
+
+   100% {
+       opacity: 1;
+   }
+}
+
+@keyframes fade-out {
+   0% {
+       opacity: 1;
+   }
+
+   100% {
+       opacity: 0;
+   }
+}
+
+@keyframes enter-top {
+   0% {
+       transform: translateY(calc(var(--anim-length) * -1));
+   }
+
+   100% {
+       transform: translateY(0);
+   }
+}
+
+@keyframes enter-left {
+   0% {
+       transform: translateX(calc(var(--anim-length) / .85));
+   }
+
+   100% {
+       transform: translateX(0);
+   }
+}
+
+@keyframes exit-left {
+   0% {
+       transform: translateX(0);
+   }
+
+   100% {
+       transform: translateX(calc(var(--anim-length) * -1));
+   }
+}
+
+@keyframes enter-right {
+   0% {
+       transform: translateX(calc(var(--anim-length) / -0.85));
+   }
+
+   100% {
+       transform: translateX(0);
+   }
+}
+
+@keyframes exit-right {
+   0% {
+       transform: translateX(0);
+   }
+
+   100% {
+       transform: translateX(var(--anim-length));
+   }
+}
+
+@keyframes scale-up {
+    from {
+        transform: scale(0.96);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
