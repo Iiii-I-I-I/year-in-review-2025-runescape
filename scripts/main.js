@@ -9,55 +9,20 @@
         return scope.querySelectorAll(selector);
     }
 
-    // lets the reader use arrow keys to focus elements inside a target element,
-    // requires the target element to have .focus and .elements properties
-    // eg. parent.focus = 0;
-    //     parent.elements = parent.querySelector('.elements-to-focus-on');
-    //     parent.addEventListener('keydown', keyHandler);
-    function keyHandler(event) {
-        let target = event.currentTarget,
-            elements = target.elements,
-            key = event.code;
-
-        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
-            event.preventDefault(); // stop page from scrolling with arrow keys
-            elements[target.focus].setAttribute('tabindex', -1);
-
-            // move to next element
-            if (['ArrowDown', 'ArrowRight'].includes(key)) {
-                target.focus++;
-
-                // if at the end, move to the start
-                if (target.focus >= elements.length) {
-                    target.focus = 0;
-                }
-            }
-            // move to previous element
-            else if (['ArrowUp', 'ArrowLeft'].includes(key)) {
-                target.focus--;
-
-                // if at the start, move to the end
-                if (target.focus < 0) {
-                    target.focus = elements.length - 1;
-                }
-            }
-
-            elements[target.focus].setAttribute('tabindex', 0);
-            elements[target.focus].focus();
-        }
-    }
-
     // based on <https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Tab_Role>
     function initTabs() {
         let tabSwitcher = get('.tab-switcher');
         let tabButtons = [...tabSwitcher.children];
 
+        tabSwitcher.addEventListener('click', changeThemes, false);
         tabSwitcher.addEventListener('click', changeTabs, false);
 
-        // make tabs keyboard accessible
-        // tabSwitcher.focus = 0;
-        // tabSwitcher.elements = getAll('.tab', tabSwitcher);
-        // tabSwitcher.addEventListener('keydown', keyHandler, false);
+        function changeThemes(event) {
+            let theme = event.target.dataset.theme;
+
+            document.body.classList.remove('theme-rs', 'theme-osrs', 'theme-rsc');
+            document.body.classList.add(theme);
+        }
 
         function changeTabs(event) {
             let currTab = get('.tab[aria-selected="true"]');

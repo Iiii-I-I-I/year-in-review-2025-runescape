@@ -20,18 +20,17 @@ html {
 
 body {
     --font-stack: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
-    --base-hue: 200deg;
 
-    --bg-01: hsl(var(--base-hue), 70%, 6%);
-    --bg-02: hsl(var(--base-hue), 42%, 17%);
-    --bg-03: hsl(var(--base-hue), 28%, 25%);
+    --bg-01: oklch(17.74% 14% var(--base-hue));
+    --bg-02: oklch(29.98% 11% var(--base-hue));
+    --bg-03: oklch(37.96% 9% var(--base-hue));
 
-    --text-01: hsl(var(--base-hue), 9%, 88%);
-    --text-02: hsl(var(--base-hue), 16%, 80%);
-    --text-03: hsl(var(--base-hue), 8%, 58%);
+    --text-01: oklch(90.8% 1% var(--base-hue));
+    --text-02: oklch(84.76% 3% var(--base-hue));
+    --text-03: oklch(66.83% 4% var(--base-hue));
 
+    --border-divider: oklch(45.99% 7% var(--base-hue));
     --border-radius: 1.2em;
-    --border-divider: hsl(var(--base-hue), 16%, 34%);
     --border-inset:
         0px 1px 0px 0px rgba(255, 255, 255, 0.08) inset,
         0 0 0 1px rgba(255, 255, 255, 0.05) inset;
@@ -56,7 +55,19 @@ body {
     --ease-in-out-quad: cubic-bezier(0.46, 0.03, 0.52, 0.96);
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
-    transition: --base-hue 1s ease;
+    transition: --base-hue 1.5s ease;
+}
+
+body.theme-rs {
+    --base-hue: 230deg;
+}
+
+body.theme-osrs {
+    --base-hue: 105deg;
+}
+
+body.theme-rsc {
+    --base-hue: 155deg;
 }
 
 @supports (color: rgb(from white r g b)) {
@@ -281,7 +292,7 @@ section .link {
     top: 3vh;
     z-index: 1000;
 
-    background-color: hsla(from var(--bg-01) h s l / 0.65);
+    background-color: oklch(from var(--bg-01) l c h / 0.65);
     backdrop-filter: blur(.8em);
     border-radius: calc(var(--border-radius) + var(--tab-gap));
     box-shadow: var(--shadow-01);
@@ -307,7 +318,7 @@ section .link {
 
 .tab {
     width: calc(100% / var(--tab-count));
-    transition: color calc(var(--anim-slow) + var(--anim-fast)) ease-in-out;
+    transition: color var(--anim-fast) ease-in-out;
     z-index: 1;
 
     color: var(--text-03);
