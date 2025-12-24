@@ -59,15 +59,15 @@ body {
 }
 
 body.theme-rs {
-    --base-hue: 230deg;
+    --base-hue: 225deg;
 }
 
 body.theme-osrs {
-    --base-hue: 105deg;
+    --base-hue: 95deg;
 }
 
 body.theme-rsc {
-    --base-hue: 155deg;
+    --base-hue: 150deg;
 }
 
 @supports (color: rgb(from white r g b)) {
@@ -285,7 +285,6 @@ section .link {
     --tab-count: 3;
     --tab-gap: .45em;
     --border-radius: 75em;
-    --alpha: 0.8;
 
     display: flex;
     position: sticky;
@@ -317,15 +316,16 @@ section .link {
 }
 
 .tab {
-    width: calc(100% / var(--tab-count));
+    flex: 1;
+    padding: 1.15em;
     transition: color var(--anim-fast) ease-in-out;
     z-index: 1;
 
+    /* override default button styles */
     color: var(--text-03);
-    font: .9rem/1.45 var(--font-stack); /* override default button styles */
+    font: .9rem/1.45 var(--font-stack);
     background: none;
     border: none;
-    padding: 1.15em;
 }
 
 .tab[aria-selected="true"] {
@@ -341,12 +341,12 @@ section .link {
 }
 
 .tab-panel {
-    transform: translate3d(0, 0, 0);
+    transform: translateZ(0); /* force GPU rendering to prevent animation jittering in Firefox */
     animation-fill-mode: both;
     animation-timing-function: var(--ease-in-out-quad);
 }
 
-/* added via hideAndSlide() in main.js */
+/* added via slideTabPanels() in main.js */
 .slide-left-fade-in {
     animation-name: enter-left, fade-in;
     animation-duration: var(--anim-slow);
@@ -1023,16 +1023,6 @@ figure {
 
    100% {
        opacity: 0;
-   }
-}
-
-@keyframes enter-top {
-   0% {
-       transform: translateY(calc(var(--anim-length) * -1));
-   }
-
-   100% {
-       transform: translateY(0);
    }
 }
 
