@@ -12,19 +12,29 @@ html {
     font-size: 16px;
 }
 
+@property --base-hue {
+    syntax: '<angle>';
+    initial-value: 200deg;
+    inherits: true;
+}
+
 body {
     --font-stack: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+    --base-hue: 200deg;
 
-    --bg-01: hsl(200, 70.21%, 6.76%);
-    --bg-02: hsl(198, 42%, 17%);
-    --bg-03: hsl(201, 26.18%, 26.15%);
+    --bg-01: hsl(var(--base-hue), 70%, 6%);
+    --bg-02: hsl(var(--base-hue), 42%, 17%);
+    --bg-03: hsl(var(--base-hue), 28%, 25%);
 
-    --text-01: hsl(197, 9.18%, 87.89%);
-    --text-02: hsl(195, 16.34%, 79.68%);
-    --text-03: hsl(198, 8.37%, 63.99%);
+    --text-01: hsl(var(--base-hue), 9%, 88%);
+    --text-02: hsl(var(--base-hue), 16%, 80%);
+    --text-03: hsl(var(--base-hue), 8%, 58%);
 
-    --border-01: hsl(210, 15.94%, 34.5%);
-    --border-radius: 1em;
+    --border-radius: 1.2em;
+    --border-divider: hsl(var(--base-hue), 16%, 34%);
+    --border-inset:
+        0px 1px 0px 0px rgba(255, 255, 255, 0.08) inset,
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 
     --shadow-01:
         0 30px 60px -8px rgba(50, 50, 93, .2),
@@ -36,9 +46,6 @@ body {
     --shadow-03:
         0 4px 8px -4px rgba(0, 0, 0, .15),
         0 12px 24px 0 rgba(0, 0, 0, .1);
-    --inset-border:
-        0px 1px 0px 0px rgba(255, 255, 255, 0.08) inset,
-        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
 
     --anim-length: 10px;
     --anim-slow: 325ms;
@@ -48,6 +55,12 @@ body {
     --ease-in-out-expo: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-in-out-quad: cubic-bezier(0.46, 0.03, 0.52, 0.96);
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    transition: --base-hue 1s ease;
+}
+
+@supports (color: rgb(from white r g b)) {
+    /* safe to use relative color syntax */
 }
 
 body {
@@ -157,7 +170,6 @@ header {
     height: 100vh;
     background-color: var(--bg-01);
     background: linear-gradient(var(--bg-01), var(--bg-02));
-    /* border-bottom: 1px solid var(--border-01); */
 }
 
 .title {
@@ -217,7 +229,7 @@ header {
 
 section,
 .section {
-    border-top: 1px solid var(--border-01);
+    border-top: 1px solid var(--border-divider);
     padding-top: 7rem;
 }
 
@@ -268,8 +280,8 @@ section .link {
     /*  fade in the ends of the line using pixel values (instead of percentages)
         with help from <https://stackoverflow.com/a/30425097> */
     background:
-        linear-gradient(to bottom, var(--bg-02), var(--bg-02) 5px, var(--border-01) 50px) top no-repeat,
-        linear-gradient(to top, var(--bg-02), var(--bg-02) 5px, var(--border-01) 50px) bottom no-repeat;
+        linear-gradient(to bottom, var(--bg-02), var(--bg-02) 5px, var(--border-divider) 50px) top no-repeat,
+        linear-gradient(to top, var(--bg-02), var(--bg-02) 5px, var(--border-divider) 50px) bottom no-repeat;
     background-size: 100% 50%;
 }
 
@@ -307,7 +319,14 @@ section .link {
    ------------ */
 
 .tab-container {
-    margin-top: 3em;
+    /* margin-top: 3em; */
+}
+
+.tab-switcher-note {
+    font-size: .9em;
+    color: var(--text-03);
+    text-align: center;
+    margin: 3em 0 .75em;
 }
 
 .tab-list {
@@ -318,7 +337,7 @@ section .link {
 
     display: flex;
     position: sticky;
-    top: 2vh;
+    top: 3vh;
     z-index: 1000;
 
     background-color: hsla(from var(--bg-01) h s l / 0.65);
@@ -342,7 +361,7 @@ section .link {
 
     background-color: var(--bg-03);
     border-radius: var(--border-radius);
-    box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .1), var(--inset-border);
+    box-shadow: 0 2px 6px -2px rgba(0, 0, 0, .1), var(--border-inset);
 }
 
 .tab {
@@ -411,15 +430,15 @@ section .link {
 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-gap: 1em;
-    /* margin: 0 var(--breakout-margin); */
+    gap: 1.25em;
+    margin: 0 var(--breakout-margin);
 }
 
 .stat {
     background-color: var(--bg-03);
     padding: 1.2em 1.25em;
     border-radius: var(--border-radius);
-    box-shadow: var(--shadow-03), var(--inset-border);
+    box-shadow: var(--shadow-03), var(--border-inset);
 }
 
 .stat-icon {
@@ -527,6 +546,12 @@ section .link {
     }
 }
 
+@media screen and (min-width: 900px) {
+    .stats-grid {
+        --breakout-margin: -3em;
+    }
+}
+
 /* --------------
        DYGRAPH
    -------------- */
@@ -537,8 +562,8 @@ section .link {
     background-color: var(--bg-03);
     border-radius: var(--border-radius);
     padding: 1.5em 1.4em 1.25em 1.6em;
-    margin: 3em 0;
-    box-shadow: var(--shadow-03), var(--inset-border);
+    margin: 0 0 3em;
+    box-shadow: var(--shadow-03), var(--border-inset);
     position: relative;
 }
 
@@ -620,7 +645,6 @@ section .link {
 
 .edits .y-label {
     align-items: flex-end;
-    /* justify-content: flex-end; */
     height: calc(300px / 4.6);
 }
 
