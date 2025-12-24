@@ -49,64 +49,60 @@
 
     // based on <https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/Tab_Role>
     function initTabs() {
-        let tabs = getAll('.tab'),
-            tabLists = getAll('.tab-list');
+        let tabSwitcher = get('.tab-switcher');
+        let tabButtons = [...tabSwitcher.children];
 
-        tabs.forEach(tab => {
-            tab.addEventListener('click', changeTabs, false);
-        });
+        tabSwitcher.addEventListener('click', changeTabs, false);
 
         // make tabs keyboard accessible
-        tabLists.forEach(tabList => {
-            tabList.focus = 0;
-            tabList.elements = getAll('.tab', tabList);
-            tabList.addEventListener('keydown', keyHandler, false);
-        });
+        // tabSwitcher.focus = 0;
+        // tabSwitcher.elements = getAll('.tab', tabSwitcher);
+        // tabSwitcher.addEventListener('keydown', keyHandler, false);
 
         function changeTabs(event) {
-            let parent = event.currentTarget.parentNode, // aka .tab-list
-                currTab = get('.tab[aria-selected="true"]', parent),
-                nextTab = event.currentTarget;
+            let currTab = get('.tab[aria-selected="true"]');
+            let nextTab = event.target;
+            let currTabIndex = tabButtons.indexOf(currTab);
+            let nextTabIndex = tabButtons.indexOf(nextTab);
 
-            let tabArray = Array.prototype.slice.call(getAll('.tab', parent)),
-                currTabIndex = tabArray.indexOf(currTab),
-                nextTabIndex = tabArray.indexOf(nextTab);
+            // don't move
+            if (currTabIndex === nextTabIndex) return;
 
-            if (currTabIndex === nextTabIndex) {
-                return;
-            } else if (currTabIndex > nextTabIndex) {
-                hideAndSlide('left');
-            } else {
-                hideAndSlide('right');
-            }
+            // deselect current tab, select clicked tab
+            currTab.setAttribute('aria-selected', false);
+            nextTab.setAttribute('aria-selected', true);
 
-            function hideAndSlide(direction) {
-                let currPanel = get('#' + currTab.getAttribute("aria-controls")),
-                    nextPanel = get('#' + nextTab.getAttribute("aria-controls")),
-                    enterDuration = 350, // --anim-slow
-                    exitDuration = 125; // --anim-fast
+            // slide tab containers
+            let tabContainers = getAll('.tab-container');
+            let direction = currTabIndex > nextTabIndex ? 'left' : 'right';
 
-                // deselect current tab, select clicked tab
-                currTab.setAttribute('aria-selected', false);
-                nextTab.setAttribute('aria-selected', true);
+            tabContainers.forEach(tabContainer => {
+                slideTabPanels(tabContainer, currTab, nextTab, direction);
+            });
 
-                // hide old panel, reveal new panel
-                currPanel.classList.add('slide', `slide-${direction}-fade-out`);
+            // move selected tab's background on .tab-switcher::before
+            tabSwitcher.style.setProperty('--index', nextTabIndex);
+        }
 
-                window.setTimeout(function () {
-                    currPanel.setAttribute('hidden', '');
-                    currPanel.classList.remove('slide', `slide-${direction}-fade-out`);
-                    nextPanel.removeAttribute('hidden');
-                    nextPanel.classList.add('slide', `slide-${direction}-fade-in`);
-                }, exitDuration);
+        function slideTabPanels(tabContainer, currTab, nextTab, direction) {
+            let currPanel = get('.' + currTab.getAttribute('data-controls'), tabContainer),
+                nextPanel = get('.' + nextTab.getAttribute('data-controls'), tabContainer),
+                enterDuration = 350, // --anim-slow
+                exitDuration = 125; // --anim-fast
 
-                window.setTimeout(function () {
-                    nextPanel.classList.remove('slide', `slide-${direction}-fade-in`);
-                }, enterDuration + exitDuration);
+            // hide old panel, reveal new panel
+            currPanel.classList.add('slide', `slide-${direction}-fade-out`);
 
-                // set --index for sliding background on .tab-list::before
-                parent.style.setProperty('--index', nextTabIndex);
-            }
+            window.setTimeout(function () {
+                currPanel.setAttribute('hidden', '');
+                currPanel.classList.remove('slide', `slide-${direction}-fade-out`);
+                nextPanel.removeAttribute('hidden');
+                nextPanel.classList.add('slide', `slide-${direction}-fade-in`);
+            }, exitDuration);
+
+            window.setTimeout(function () {
+                nextPanel.classList.remove('slide', `slide-${direction}-fade-in`);
+            }, enterDuration + exitDuration);
         }
     }
 

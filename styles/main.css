@@ -270,7 +270,7 @@ section .link {
     margin: 2.5em 0 .75em;
 }
 
-.tab-list {
+.tab-switcher {
     --tab-count: 3;
     --tab-gap: .45em;
     --border-radius: 75em;
@@ -290,7 +290,7 @@ section .link {
     max-width: 26em;
 }
 
-.tab-list::before {
+.tab-switcher::before {
     content: '';
     position: absolute;
     top: var(--tab-gap);
@@ -319,6 +319,10 @@ section .link {
 
 .tab[aria-selected="true"] {
     color: var(--text-01);
+}
+
+.tab span {
+    pointer-events: none;
 }
 
 .label-short {
