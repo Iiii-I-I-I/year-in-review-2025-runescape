@@ -14,15 +14,15 @@ html {
 
 @property --base-hue {
     syntax: '<angle>';
-    initial-value: 200deg;
+    initial-value: 225deg;
     inherits: true;
 }
 
 body {
     --font-stack: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
 
-    --bg-01: oklch(17.74% 14% var(--base-hue));
-    --bg-02: oklch(29.98% 11% var(--base-hue));
+    --bg-01: oklch(17.74% 12% var(--base-hue));
+    --bg-02: oklch(29.98% 10% var(--base-hue));
     --bg-03: oklch(37.96% 9% var(--base-hue));
 
     --text-01: oklch(90.8% 1% var(--base-hue));
@@ -54,7 +54,14 @@ body {
     --ease-in-out-expo: cubic-bezier(0.4, 0, 0.2, 1);
     --ease-in-out-quad: cubic-bezier(0.46, 0.03, 0.52, 0.96);
     --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
 
+body {
+    color: var(--text-02);
+    font: 1em/1.6 var(--font-stack);
+    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+    background-color: var(--bg-02);
+    margin: 0;
     transition: --base-hue 1.5s ease;
 }
 
@@ -68,18 +75,6 @@ body.theme-osrs {
 
 body.theme-rsc {
     --base-hue: 150deg;
-}
-
-@supports (color: rgb(from white r g b)) {
-    /* safe to use relative color syntax */
-}
-
-body {
-    font: 1em/1.6 var(--font-stack);
-    font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
-    color: var(--text-02);
-    background-color: var(--bg-02);
-    margin: 0;
 }
 
 @supports (font-variation-settings: normal) {
@@ -138,20 +133,6 @@ strong {
     outline: none;
 }
 
-.button {
-    font-family: inherit;
-    font-size: 1em;
-    border: none;
-    border-radius: calc(var(--border-radius) * .8);
-    transition: filter .2s ease;
-    cursor: pointer;
-}
-
-.button:hover,
-.button:focus {
-    filter: brightness(.96) saturate(1.5);
-}
-
 @media screen and (prefers-reduced-motion) {
     body {
         --anim-length: 0;
@@ -186,36 +167,46 @@ header {
 .title {
     margin: auto;
     text-align: center;
-    transform: skew(0, -6deg)
+    transform: skew(0, -6deg);
 }
 
 .title > span {
     display: block;
 }
 
-.title .top,
-.title .bottom {
-    color: transparent;
-    background: linear-gradient(70deg, #2e84b9 15%, #6a981c, #d1802b 80%);
-    -webkit-background-clip: text;
-    background-clip: text;
+.title-top {
+    color: var(--text-03);
+    font-size: calc(var(--header-size) * 1.375);
+    letter-spacing: .01em;
 }
 
-.title .top {
-    font-size: calc(var(--header-size) * 0.875);
-    letter-spacing: 1px;
+.title-center {
+    font-size: calc(var(--header-size) * 4);
+    font-weight: 850;
+    letter-spacing: -0.03em;
+    margin: -0.06em 0 -0.03em;
 }
 
-.title .center {
-    font-size: calc(var(--header-size) * 4.1);
-    letter-spacing: -0.05em;
-    margin: -0.05em 0;
+.title-bottom {
+    font-size: calc(var(--header-size) * .66);
+    transform: translateX(.1em);
+    letter-spacing: .02em;
 }
 
-.title .bottom {
-    font-size: calc(var(--header-size) * 1.12);
-    text-transform: uppercase;
-    letter-spacing: 1px;
+.bottom-wiki + .bottom-wiki {
+    padding-left: .25em;
+}
+
+.bottom-rs {
+    color: #3496d2;
+}
+
+.bottom-osrs {
+    color: #c88312;
+}
+
+.bottom-rsc {
+    color: #6baa01;
 }
 
 @media screen and (max-width: 900px), screen and (max-height: 900px) {
@@ -230,7 +221,7 @@ header {
 
 .container {
     max-width: 800px;
-    padding: 0 2em 8rem;
+    padding: 0 2em 4rem;
     margin: auto;
 }
 

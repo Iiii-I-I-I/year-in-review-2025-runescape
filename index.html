@@ -26,9 +26,13 @@
 <body class="theme-rs">
     <header>
         <h1 class="title">
-            <span class="top">The RuneScape Wikis</span>
-            <span class="center">2025</span>
-            <span class="bottom">Year in Review</span>
+            <span class="title-top">Year in Review</span>
+            <span class="title-center">2025</span>
+            <span class="title-bottom">
+                <span class="bottom-wiki bottom-rs">RS Wiki</span>
+                <span class="bottom-wiki bottom-osrs">OSRS Wiki</span>
+                <span class="bottom-wiki bottom-rsc">RSC Wiki</span>
+            </span>
         </h1>
     </header>
     <main class="container">
@@ -69,7 +73,7 @@
 
             <div class="tab-container">
                 <div class="tab-panel panel-rs" role="tabpanel" data-controlledby="tab-rs">
-                    <div class="tab-switcher-note">← Use the top buttons to switch between wikis →</div>
+                    <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid section-rs">
                         <div class="stat">
                             <svg class="stat-icon"><use href="images/icons/bootstrap-icons.svg#mouse2-fill"/></svg>
@@ -95,7 +99,7 @@
                 </div>
 
                 <div class="tab-panel panel-osrs" role="tabpanel" data-controlledby="tab-osrs" hidden>
-                    <div class="tab-switcher-note">← Use the top buttons to switch between wikis →</div>
+                    <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid section-osrs">
                         <div class="stat">
                             <svg class="stat-icon"><use href="images/icons/bootstrap-icons.svg#mouse2-fill"/></svg>
@@ -121,7 +125,7 @@
                 </div>
 
                 <div class="tab-panel panel-rsc" role="tabpanel" data-controlledby="tab-rsc" hidden>
-                    <div class="tab-switcher-note">← Use the top buttons to switch between wikis →</div>
+                    <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid section-rsc">
                         <div class="stat">
                             <svg class="stat-icon"><use href="images/icons/bootstrap-icons.svg#mouse2-fill"/></svg>
@@ -167,7 +171,7 @@
 
             <div class="tab-container">
                 <div class="tab-panel panel-rs" role="tabpanel" data-controlledby="tab-rs">
-                    <div class="tab-switcher-note">← Use the top buttons to switch between wikis →</div>
+                    <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid">
                         <div class="stat">
                             <svg class="stat-icon"><use href="images/icons/bootstrap-icons.svg#file-text-fill"/></svg>
@@ -193,7 +197,7 @@
                 </div>
 
                 <div class="tab-panel panel-osrs" role="tabpanel" data-controlledby="tab-osrs" hidden>
-                    <div class="tab-switcher-note">← Use the top buttons to switch between wikis →</div>
+                    <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid">
                         <div class="stat">
                             <svg class="stat-icon"><use href="images/icons/bootstrap-icons.svg#file-text-fill"/></svg>
@@ -219,7 +223,7 @@
                 </div>
 
                 <div class="tab-panel panel-rsc" role="tabpanel" data-controlledby="tab-rsc" hidden>
-                    <div class="tab-switcher-note">← Use the top buttons to switch between wikis →</div>
+                    <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid">
                         <div class="stat">
                             <svg class="stat-icon"><use href="images/icons/bootstrap-icons.svg#file-text-fill"/></svg>
@@ -299,22 +303,6 @@
             </ul>
         </section>
 
-        <!-- TECHNICAL -->
-        <!-- <section>
-            <h2 id="technical">Technical changes</h2>
-            <p>In the second half of 2021, the Weird Gloop sysadmins were hard at work on a major upgrade to the wiki servers. Launching progressively between September and November, we moved our infrastructure from OVH to Google Cloud. This gave us increased reliability, greater flexibility, and faster load times for page views that hit the wiki servers.</p>
-            <p>Below, we've graphed the wikis' time to first byte (TTFB), which measures how long it takes for your browser to receive the first byte of page content from the server. TTFB is a good indicator of how responsive a site is &mdash; the lower, the better.</p>
-            <div class="dygraph-container site-speed">
-                <div class="dygraph-title">Time to first byte <span style="opacity: .7">(7-day rolling avg.)</span></div>
-                <div class="site-speed-avg">Average time</div>
-                <div class="dygraph-legend"></div>
-                <div class="dygraph-graph" style="width: 100%; height: 300px"></div>
-                <div class="dygraph-x-labels"></div>
-            </div>
-            <p>The wikis had an average TTFB of 270 milliseconds over the past year. For comparison, that's <a class="link" target="_blank" rel="noopener" href="https://performance.wikimedia.org/#!/year">20 percent faster than Wikipedia</a>, which averaged 340 milliseconds. When combined with <a class="link" target="_blank" rel="noopener" href="https://blog.cloudflare.com/orpheus/">improvements to our CDN</a>, these changes cut the average page load time nearly in half!</p>
-            <p>As part of this infrastructure upgrade, we also upgraded our version of MediaWiki, which is the main software used to operate the wikis. Moving to <a class="link" target="_blank" rel="noopener" href="https://www.mediawiki.org/wiki/MediaWiki_1.36">MediaWiki 1.36</a> was (hopefully) barely noticed by most readers, but behind the scenes it's a huge deal: it makes the wikis faster, more secure, and use less resources &mdash; and also unblocks some cool features like user renames. These upgrades helped keep us competitive with better-funded projects in pushing MediaWiki to its limits.</p>
-        </section> -->
-
         <!-- CLOSING -->
         <section class="section-closing">
             <h2>Thank you!</h2>
@@ -324,12 +312,11 @@
 
             <p class="signature"><strong>The RuneScape Wikis<br />1 January 2026</strong><p>
 
-            <div class="wiki-cards">
+            <!-- <div class="wiki-cards">
                 <a class="wiki-card card-rs" href="https://runescape.wiki" target="_blank" rel="noopener"><span>RuneScape<br />Wiki</span></a>
                 <a class="wiki-card card-osrs" href="https://oldschool.runescape.wiki" target="_blank" rel="noopener"><span>Old School<br />RuneScape Wiki</span></a>
-                <!-- <a class="wiki-card card-ptbr" href="https://pt.runescape.wiki" target="_blank" rel="noopener"><span>Portuguese-Brazilian Wiki</span></a> -->
                 <a class="wiki-card card-rsc" href="https://classic.runescape.wiki" target="_blank" rel="noopener"><span>RuneScape Classic<br />Wiki</span></a>
-            </div>
+            </div> -->
         </section>
     </main>
 
