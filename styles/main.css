@@ -189,23 +189,32 @@ header {
 
 .title-bottom {
     font-size: calc(var(--header-size) * .66);
-    transform: translateX(.1em);
+    transform: translateX(.1em) translateZ(0); /* fix text jittering */
     letter-spacing: .02em;
 }
 
-.bottom-wiki + .bottom-wiki {
-    padding-left: .25em;
+.bottom-wiki a {
+    text-decoration: none;
+    transition: var(--anim-med) ease-in-out;
 }
 
-.bottom-rs {
+.bottom-wiki a:hover {
+    filter: brightness(.85) saturate(1.2);
+}
+
+.bottom-wiki + .bottom-wiki {
+    margin-left: .25em;
+}
+
+.bottom-rs a {
     color: #3496d2;
 }
 
-.bottom-osrs {
+.bottom-osrs a {
     color: #c88312;
 }
 
-.bottom-rsc {
+.bottom-rsc a {
     color: #6baa01;
 }
 
