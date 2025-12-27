@@ -9,7 +9,8 @@
 }
 
 html {
-    font-size: 16px;
+    font-size: 1em;
+    -webkit-text-size-adjust: 100%; /* prevent font scaling in mobile landscape */
 }
 
 @property --base-hue {
@@ -60,7 +61,7 @@ body {
     color: var(--text-02);
     font: 1em/1.6 var(--font-stack);
     font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
-    background-color: var(--bg-02);
+    background-color: var(--bg-01);
     margin: 0;
     transition: --base-hue 1.5s ease;
 }
@@ -141,13 +142,13 @@ strong {
 
 @media screen and (min-width: 900px) {
     html {
-        font-size: 17px;
+        font-size: 1.0625em;
     }
 }
 
 @media screen and (min-width: 1400px) {
     html {
-        font-size: 18px;
+        font-size: 1.125em;
     }
 }
 
@@ -160,7 +161,6 @@ header {
 
     display: flex;
     height: 100vh;
-    background-color: var(--bg-01);
     background: linear-gradient(var(--bg-01), var(--bg-02));
 }
 
@@ -228,24 +228,26 @@ header {
        MAIN
    ------------ */
 
-.container {
-    max-width: 800px;
-    padding: 0 2em 4rem;
-    margin: auto;
+main {
+    --section-padding: 7em;
+
+    background-color: var(--bg-02);
 }
 
-/* --------------
-      SECTIONS
-   -------------- */
+.main-container {
+    max-width: 800px;
+    padding: 0 2em 4em;
+    margin: auto;
+}
 
 section,
 .section {
     border-top: 1px solid var(--border-divider);
-    padding-top: 7rem;
+    padding-top: var(--section-padding);
 }
 
 section + section {
-    margin-top: 7rem;
+    margin-top: var(--section-padding);
 }
 
 section h2,
@@ -268,6 +270,19 @@ section .link {
 .section-closing .link {
     /* --section-color: hsl(48.5, 75.9%, 64.74%); */
     --section-color: hsl(203.11, 100%, 70.25%);
+}
+
+@media screen and (max-width: 900px) {
+    main {
+        --section-padding: 4em;
+    }
+}
+
+@supports (padding: max(0px)) {
+    .main-container {
+        padding-left: max(1.5em, env(safe-area-inset-left));
+        padding-right: max(1.5em, env(safe-area-inset-right));
+    }
 }
 
 /* ------------
@@ -296,7 +311,7 @@ section .link {
     border-radius: calc(var(--border-radius) + var(--tab-gap));
     box-shadow: var(--shadow-01);
 
-    margin: 2em auto 7rem;
+    margin: 2em auto var(--section-padding);
     max-width: 26em;
 }
 
@@ -638,6 +653,7 @@ section .link {
 @media screen and (max-width: 800px) {
     .dygraph-container {
         padding: 1em;
+        overflow-x: hidden; /* quick (bad) fix for annotation going offscreen on mobile */
     }
 
     .dygraph-legend {
