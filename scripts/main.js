@@ -75,7 +75,7 @@
     function initGraphs() {
         const config = {
             locale: 'en-GB',
-            dateOptions: { day: 'numeric', month: 'long' },
+            dateOptions: { day: 'numeric', month: 'long', year: 'numeric' },
             gridColor: 'hsl(210, 15.94%, 38.5%)',
             axes: {
                 x: { drawAxis: false, drawGrid: false },
@@ -105,6 +105,14 @@
                    `<div class="dygraph-legend-views">${legendLabel}: ${average}</div>` +
                    `<div class="dygraph-legend-change">7-day change: ${change}</div>`;
         };
+        const annotationMouseOverHandler = (annotation) => {
+            annotation.div.classList.remove('tooltip-hidden');
+            annotation.div.style.zIndex = '100';
+        };
+        const annotationMouseOutHandler = (annotation) => {
+            annotation.div.classList.add('tooltip-hidden');
+            annotation.div.style.removeProperty('z-index');
+        };
 
         function basicGraphConfig(containerSelector, legendLabel, lineColor) {
             return {
@@ -121,14 +129,8 @@
                 fillGraph: true,
                 legendFormatter: (data) => legendFormatter(data, legendLabel),
                 interactionModel: touchInteractionModel,
-                annotationMouseOverHandler: (annotation) => {
-                    annotation.div.classList.remove('tooltip-hidden');
-                    annotation.div.style.zIndex = '100';
-                },
-                annotationMouseOutHandler: (annotation) => {
-                    annotation.div.classList.add('tooltip-hidden');
-                    annotation.div.style.removeProperty('z-index');
-                },
+                annotationMouseOverHandler: (annotation) => annotationMouseOverHandler(annotation),
+                annotationMouseOutHandler: (annotation) => annotationMouseOutHandler(annotation),
             };
         }
 
@@ -202,7 +204,7 @@
                     height: 24,
                     cssClass: `tooltip-hidden annotation-${i + 1}`,
                     tickWidth: 2,
-                    tickHeight: annotation.tickHeight || 13
+                    tickHeight: annotation.tickHeight || 20
                 };
             });
         }
