@@ -13,6 +13,7 @@
     function initTabs() {
         let tabSwitcher = get('.tab-switcher');
         let tabButtons = [...tabSwitcher.children];
+        let tabContainers = getAll('.tab-container');
 
         tabSwitcher.addEventListener('click', changeThemes, false);
         tabSwitcher.addEventListener('click', changeTabs, false);
@@ -38,7 +39,6 @@
             nextTab.setAttribute('aria-selected', true);
 
             // slide tab containers
-            let tabContainers = getAll('.tab-container');
             let direction = currTabIndex > nextTabIndex ? 'left' : 'right';
 
             tabContainers.forEach(tabContainer => {
@@ -50,10 +50,10 @@
         }
 
         function slideTabPanels(tabContainer, currTab, nextTab, direction) {
-            let currPanel = get('.' + currTab.getAttribute('data-controls'), tabContainer),
-                nextPanel = get('.' + nextTab.getAttribute('data-controls'), tabContainer),
-                enterDuration = 350, // --anim-slow
-                exitDuration = 125; // --anim-fast
+            let currPanel = get('.' + currTab.dataset.controls, tabContainer);
+            let nextPanel = get('.' + nextTab.dataset.controls, tabContainer);
+            let enterDuration = 325; // needs to match --anim-slow value
+            let exitDuration = 125; // needs to match --anim-fast value
 
             // hide old panel, reveal new panel
             currPanel.classList.add('slide', `slide-${direction}-fade-out`);
@@ -73,318 +73,236 @@
 
     // uses dygraphs library <http://dygraphs.com/>
     function initGraphs() {
-        let trafficData = './data/traffic.csv',
-            siteSpeedData = './data/site-speed.csv',
-            editsData = './data/edits.csv',
-            gridColor = 'hsl(210, 15.94%, 38.5%)',
-            locale = 'en-GB',
-            dateOptions = {
-                day: 'numeric',
-                month: 'long'
-            };
+        const config = {
+            locale: 'en-GB',
+            dateOptions: { day: 'numeric', month: 'long' },
+            gridColor: 'hsl(210, 15.94%, 38.5%)',
+            axes: {
+                x: { drawAxis: false, drawGrid: false },
+                y: { drawAxis: false, includeZero: true }
+            }
+        };
+        const touchInteractionModel = {
+            touchmove: (event) => {
+                const coords = event.touches[0];
+                const simulation = new MouseEvent('mousemove', {
+                    clientX: coords.clientX,
+                    clientY: coords.clientY
+                });
 
-        // draw traffic graph
-        let trafficGraph = new Dygraph(get('.traffic .dygraph-graph'), trafficData, {
-                color: 'hsl(18.65, 91.72%, 63.78%)',
+                event.preventDefault();
+                event.target.dispatchEvent(simulation);
+            }
+        };
+        const legendFormatter = (data, legendLabel) => {
+            if (!data.x) return '';
+
+            const date = new Date(data.xHTML).toLocaleString(config.locale, config.dateOptions);
+            const average = data.series[0].yHTML.average;
+            const change = data.series[0].yHTML.change;
+
+            return `<div class="dygraph-legend-date">${date}</div>` +
+                   `<div class="dygraph-legend-views">${legendLabel}: ${average}</div>` +
+                   `<div class="dygraph-legend-change">7-day change: ${change}</div>`;
+        };
+
+        function basicGraphConfig(containerSelector, legendLabel, lineColor) {
+            return {
+                color: lineColor,
                 strokeWidth: 3,
-                axisLineColor: gridColor,
-                gridLineColor: gridColor,
+                axes: config.axes,
+                axisLineColor: config.gridColor,
+                gridLineColor: config.gridColor,
                 gridLineWidth: 1,
-                highlightCircleSize: 4,
-                xRangePad: 4, // must match highlightCircleSize
-                labelsDiv: get('.traffic .dygraph-legend'),
+                highlightCircleSize: 5,
+                xRangePad: 4,
+                labelsDiv: get(`${containerSelector} .dygraph-legend`),
                 rollPeriod: 7,
                 fillGraph: true,
-                interactionModel: {
-                    // allow user to drag finger across graph to see pageview numbers
-                    'touchmove': function (event) {
-                        let coords = event.touches[0];
-                        let simulation = new MouseEvent('mousemove', {
-                                clientX: coords.clientX,
-                                clientY: coords.clientY
-                            }
-                        );
-
-                        event.preventDefault();
-                        event.target.dispatchEvent(simulation);
-                    }
-                },
-                annotationMouseOverHandler: function (annotation) {
+                legendFormatter: (data) => legendFormatter(data, legendLabel),
+                interactionModel: touchInteractionModel,
+                annotationMouseOverHandler: (annotation) => {
                     annotation.div.classList.remove('tooltip-hidden');
-                    annotation.div.style.zIndex = '100'; // make sure tooltip appears on top of annotations
+                    annotation.div.style.zIndex = '100';
                 },
-                annotationMouseOutHandler: function (annotation) {
+                annotationMouseOutHandler: (annotation) => {
                     annotation.div.classList.add('tooltip-hidden');
                     annotation.div.style.removeProperty('z-index');
                 },
-                drawCallback: function (dygraph, isInitial) {
-                    if (isInitial) {
-                        dygraph.setAnnotations(trafficAnnotations);
+            };
+        }
 
-                        // create custom x-axis labels (default ones are misaligned)
-                        for (let i = 0; i < 12; i++) {
-                            let month = new Date(2021, i).toLocaleString(locale, { month: 'short' }),
-                                labelNode = document.createElement('div'),
-                                shortLabel = document.createElement('span'),
-                                longLabel = document.createElement('span');
+        function appendXAxisLabels(containerSelector) {
+            const xAxisLabels = get(`${containerSelector} .dygraph-x-labels`);
 
-                            labelNode.classList.add('x-label');
-                            shortLabel.classList.add('short-month');
-                            shortLabel.textContent = month.substring(0, 1);
-                            longLabel.classList.add('long-month');
-                            longLabel.textContent = month;
+            for (let i = 0; i < 12; i++) {
+                const month = new Date(2021, i).toLocaleString(config.locale, { month: 'short' });
+                const labelNode = document.createElement('div');
+                const shortLabel = document.createElement('span');
+                const longLabel = document.createElement('span');
 
-                            labelNode.appendChild(shortLabel);
-                            labelNode.appendChild(longLabel);
-                            get('.traffic .dygraph-x-labels').appendChild(labelNode);
-                        }
+                labelNode.classList.add('x-label');
+                longLabel.classList.add('long-month');
+                longLabel.textContent = month;
+                shortLabel.classList.add('short-month');
+                shortLabel.textContent = month.substring(0, 1);
 
-                        // create custom y-axis labels (can't position default ones over top of graph)
-                        let yAxisLabels = document.createElement('div');
-
-                        yAxisLabels.classList.add('dygraph-y-labels');
-                        get('.traffic .dygraph-graph').appendChild(yAxisLabels);
-
-                        for (let i = 6; i >= 0; i--) {
-                            let viewLabel = document.createElement('div');
-
-                            viewLabel.classList.add('y-label');
-                            viewLabel.textContent = i + ((i !== 0) ? 'm' : '');
-                            yAxisLabels.appendChild(viewLabel);
-                        }
-                    }
-
-                    trafficTooltips.forEach((tooltip, i) => {
-                        // insert tooltip inside its respective annotation
-                        let annotation = get(`.traffic .annotation-${i + 1}`);
-
-                        annotation.appendChild(tooltip);
-                        annotation.removeAttribute('title');
-                    });
-                },
-                legendFormatter: function (data) {
-                    let date, average, change;
-
-                    if (data.x) {
-                        date = new Date(data.xHTML).toLocaleString(locale, dateOptions);
-                        average = data.series[0].yHTML.average;
-                        change = data.series[0].yHTML.change;
-                    }
-
-                    return `<div class="dygraph-legend-date">${date}</div>` +
-                           `<div class="dygraph-legend-views">Views: ${average}</div>` +
-                           `<div class="dygraph-legend-change">7-day change: ${change}</div>`;
-                },
-                axes: {
-                    x: {
-                        drawAxis: false,
-                        drawGrid: false
-                    },
-                    y: {
-                        drawAxis: false,
-                        includeZero: true,
-                        valueRange: [0, 6500000],
-                        valueFormatter: function (num, opts, series, graph, row, col) {
-                            // original un-averaged value for this point
-                            let currentValue = graph.getValue(row, col);
-
-                            // 7-day change
-                            let oneWeekAgo = graph.getValue(row - 7, col);
-                            let change = Math.round((currentValue - oneWeekAgo) / oneWeekAgo * 100);
-
-                            if (change < 0) {
-                                // replace default hyphen (VERY WRONG) with actual negative symbol
-                                change = '−' + change.toString().substring(1) + '%';
-                            } else {
-                                // plus sign for positive numbers
-                                change = '+' + change + '%';
-                            }
-
-                            // 7-day change not possible for first 7 days
-                            if (row < 7) change = 'N/A';
-
-                            return {
-                                actual: currentValue.toLocaleString(locale),
-                                average: Math.round(num).toLocaleString(locale), // auto-averaged over rollPeriod
-                                change: change
-                            };
-                        }
-                    }
-                }
+                labelNode.appendChild(shortLabel);
+                labelNode.appendChild(longLabel);
+                xAxisLabels.appendChild(labelNode);
             }
-        );
+        }
 
-        // create traffic annotations
-        let trafficAnnotations = [
-                {
-                    x: "2021/01/04",
-                    text: "RuneScape's 20th anniversary events begin"
-                }, {
-                    x: "2021/02/22",
-                    text: "RuneScape: Azzanadra's Quest is released"
-                }, {
-                    x: "2021/05/26",
-                    text: "Old School: Clans system is released"
-                }, {
-                    x: "2021/06/16",
-                    text: "Old School: A Kingdom Divided is released"
-                }, {
-                    x: "2021/07/26",
-                    text: "RuneScape: Nodon Front is released"
-                }, {
-                    x: "2021/10/06",
-                    text: "Old School: Group Ironman Mode is released",
-                    tickHeight: 33
-                }, {
-                    x: "2021/10/25",
-                    text: "RuneScape: TzekHaar Front is released"
-                }, {
-                    x: "2021/11/25",
-                    text: "Old School: Android client beta testing begins"
-                }
-            ],
-            trafficTooltips = [];
+        function appendYAxisLabels(containerSelector, maxValue, unit) {
+            const yAxisLabels = document.createElement('div');
 
-        trafficAnnotations.forEach((annotation, i) => {
-            annotation.series = 'Pageviews';
-            annotation.shortText = i + 1;
-            annotation.width = 24;
-            annotation.height = 24;
-            annotation.cssClass = `tooltip-hidden annotation-${i + 1}`;
-            annotation.tickWidth = 2;
-            if (annotation.tickHeight === undefined) annotation.tickHeight = 13;
+            yAxisLabels.classList.add('dygraph-y-labels');
 
-            createTooltip(annotation.x, annotation.text, trafficTooltips);
-        });
-
-        // draw edits graph
-        let editsGraph = new Dygraph(get('.edits .dygraph-graph'), editsData, {
-                color: 'hsl(139.76, 69.67%, 47.84%)',
-                strokeWidth: 3,
-                axisLineColor: gridColor,
-                gridLineColor: gridColor,
-                gridLineWidth: 1,
-                highlightCircleSize: 4,
-                xRangePad: 4, // must match highlightCircleSize
-                labelsDiv: get('.edits .dygraph-legend'),
-                rollPeriod: 7,
-                fillGraph: true,
-                interactionModel: {
-                    // allow user to drag finger across graph to see pageview numbers
-                    'touchmove': function (event) {
-                        let coords = event.touches[0];
-                        let simulation = new MouseEvent('mousemove', {
-                                clientX: coords.clientX,
-                                clientY: coords.clientY
-                            }
-                        );
-
-                        event.preventDefault();
-                        event.target.dispatchEvent(simulation);
-                    }
-                },
-                drawCallback: function (dygraph, isInitial) {
-                    if (isInitial) {
-                        // create custom x-axis labels (default ones are misaligned)
-                        for (let i = 0; i < 12; i++) {
-                            let month = new Date(2021, i).toLocaleString(locale, { month: 'short' }),
-                                labelNode = document.createElement('div'),
-                                shortLabel = document.createElement('span'),
-                                longLabel = document.createElement('span');
-
-                            labelNode.classList.add('x-label');
-                            shortLabel.classList.add('short-month');
-                            shortLabel.textContent = month.substring(0, 1);
-                            longLabel.classList.add('long-month');
-                            longLabel.textContent = month;
-
-                            labelNode.appendChild(shortLabel);
-                            labelNode.appendChild(longLabel);
-                            get('.edits .dygraph-x-labels').appendChild(labelNode);
-                        }
-
-                        // create custom y-axis labels (can't position default ones over top of graph)
-                        let yAxisLabels = document.createElement('div');
-
-                        yAxisLabels.classList.add('dygraph-y-labels');
-                        get('.edits .dygraph-graph').appendChild(yAxisLabels);
-
-                        for (let i = 4; i >= 0; i--) {
-                            let viewLabel = document.createElement('div');
-
-                            viewLabel.classList.add('y-label');
-                            viewLabel.textContent = i + ((i !== 0) ? 'k' : '');
-                            yAxisLabels.appendChild(viewLabel);
-                        }
-                    }
-                },
-                legendFormatter: function (data) {
-                    let date, actual, average, change;
-
-                    if (data.x) {
-                        date = new Date(data.xHTML).toLocaleString(locale, dateOptions);
-                        actual = data.series[0].yHTML.actual;
-                        average = data.series[0].yHTML.average;
-                        change = data.series[0].yHTML.change;
-                    }
-
-                    return `<div class="dygraph-legend-date">${date}</div>` +
-                           `<div class="dygraph-legend-views">Edits: ${average}</div>` +
-                           `<div class="dygraph-legend-change">7-day change: ${change}</div>`;
-                },
-                axes: {
-                    x: {
-                        drawAxis: false,
-                        drawGrid: false
-                    },
-                    y: {
-                        drawAxis: false,
-                        includeZero: true,
-                        valueRange: [0, 4600],
-                        valueFormatter: function (num, opts, series, graph, row, col) {
-                            // original un-averaged value for this point
-                            let currentValue = graph.getValue(row, col);
-
-                            // 7-day change
-                            let oneWeekAgo = graph.getValue(row - 7, col);
-                            let change = Math.round((currentValue - oneWeekAgo) / oneWeekAgo * 100);
-
-                            if (change < 0) {
-                                // replace default hyphen (VERY WRONG) with actual negative symbol
-                                change = '−' + change.toString().substring(1) + '%';
-                            } else {
-                                // plus sign for positive numbers
-                                change = '+' + change + '%';
-                            }
-
-                            // 7-day change not possible for first 7 days
-                            if (row < 7) change = 'N/A';
-
-                            return {
-                                actual: currentValue.toLocaleString(locale),
-                                average: Math.round(num).toLocaleString(locale), // auto-averaged over rollPeriod
-                                change: change
-                            };
-                        }
-                    }
-                }
+            for (let i = maxValue; i >= 0; i--) {
+                const viewLabel = document.createElement('div');
+                viewLabel.classList.add('y-label');
+                viewLabel.textContent = i + (i !== 0 ? unit : '');
+                yAxisLabels.appendChild(viewLabel);
             }
-        );
 
-        function createTooltip(date, text, tooltips) {
-            let tooltip = document.createElement('div'),
-                dateNode = document.createElement('div'),
-                textNode = document.createElement('div');
+            get(`${containerSelector} .dygraph-graph`).appendChild(yAxisLabels);
+        }
+
+        function calculate7DayChange(currentValue, previousValue, row) {
+            if (row < 7) return 'N/A';
+
+            const change = Math.round((currentValue - previousValue) / previousValue * 100);
+            const sign = change < 0 ? '−' : '+';
+
+            return sign + Math.abs(change) + '%';
+        }
+
+        function createValueFormatter(locale) {
+            return function(num, opts, series, graph, row, col) {
+                const currentValue = graph.getValue(row, col);
+                const oneWeekAgo = graph.getValue(row - 7, col);
+                const change = calculate7DayChange(currentValue, oneWeekAgo, row);
+
+                return {
+                    actual: currentValue.toLocaleString(locale),
+                    average: Math.round(num).toLocaleString(locale),
+                    change: change
+                };
+            };
+        }
+
+        function createAnnotations(annotations, seriesName) {
+            // set basic properties for all annotations
+            return annotations.map((annotation, i) => {
+                return {
+                    ...annotation,
+                    series: seriesName, // must match column name in CSV
+                    shortText: i + 1,
+                    width: 24,
+                    height: 24,
+                    cssClass: `tooltip-hidden annotation-${i + 1}`,
+                    tickWidth: 2,
+                    tickHeight: annotation.tickHeight || 13
+                };
+            });
+        }
+
+        function createTooltip(date, text) {
+            const tooltip = document.createElement('div');
+            const dateNode = document.createElement('div');
+            const textNode = document.createElement('div');
 
             dateNode.classList.add('tooltip-date');
-            dateNode.textContent = new Date(date).toLocaleString(locale, dateOptions);
+            dateNode.textContent = new Date(date).toLocaleString(config.locale, config.dateOptions);
             textNode.textContent = text;
 
             tooltip.classList.add('tooltip');
             tooltip.appendChild(dateNode);
             tooltip.appendChild(textNode);
-            tooltips.push(tooltip);
+
+            return tooltip;
         }
+
+        function appendTooltips(containerSelector, annotations) {
+            // insert tooltip inside its respective annotation, replacing hover title text
+            annotations.forEach((annotation, i) => {
+                const tooltip = createTooltip(annotation.x, annotation.text);
+                const annotationEl = get(`${containerSelector} .annotation-${i + 1}`);
+
+                if (annotationEl && !annotationEl.contains(tooltip)) {
+                    annotationEl.appendChild(tooltip);
+                    annotationEl.removeAttribute('title');
+                }
+            });
+        }
+
+        // =================
+        //      TRAFFIC
+        // =================
+
+        const trafficAnnotations = createAnnotations([
+            { x: "2021/01/04", text: "RuneScape's 20th anniversary events begin" },
+            { x: "2021/02/22", text: "RuneScape: Azzanadra's Quest is released" },
+            { x: "2021/05/26", text: "Old School: Clans system is released" },
+            { x: "2021/06/16", text: "Old School: A Kingdom Divided is released" },
+            { x: "2021/07/26", text: "RuneScape: Nodon Front is released" },
+            { x: "2021/10/06", text: "Old School: Group Ironman Mode is released", tickHeight: 33 },
+            { x: "2021/10/25", text: "RuneScape: TzekHaar Front is released" },
+            { x: "2021/11/25", text: "Old School: Android client beta testing begins" },
+        ], 'Pageviews');
+        const trafficGraphConfig = {
+            ...basicGraphConfig('.traffic', 'Views', 'hsl(18.65, 91.72%, 63.78%)'),
+            drawCallback: (dygraph, isInitial) => {
+                if (isInitial) {
+                    dygraph.setAnnotations(trafficAnnotations);
+                    appendTooltips('.traffic', trafficAnnotations);
+                    appendXAxisLabels('.traffic'); // units are months
+                    appendYAxisLabels('.traffic', 6, 'm'); // units are millions of pageviews
+                }
+            },
+            axes: {
+                ...config.axes,
+                y: {
+                    ...config.axes.y,
+                    valueRange: [0, 6500000],
+                    valueFormatter: createValueFormatter(config.locale)
+                }
+            }
+        };
+
+        new Dygraph(
+            get('.traffic .dygraph-graph'),
+            './data/traffic.csv',
+            trafficGraphConfig
+        );
+
+        // =================
+        //       EDITS
+        // =================
+
+        const editsGraphConfig = {
+            ...basicGraphConfig('.edits', 'Edits', 'hsl(139.76, 69.67%, 47.84%)'),
+            drawCallback: (dygraph, isInitial) => {
+                if (isInitial) {
+                    appendXAxisLabels('.edits'); // units are months
+                    appendYAxisLabels('.edits', 4, 'k'); // units are thousands of edits
+                }
+            },
+            axes: {
+                ...config.axes,
+                y: {
+                    ...config.axes.y,
+                    valueRange: [0, 4600],
+                    valueFormatter: createValueFormatter(config.locale)
+                }
+            }
+        };
+
+        new Dygraph(
+            get('.edits .dygraph-graph'),
+            './data/edits.csv',
+            editsGraphConfig
+        );
     }
 
     function initModal() {
