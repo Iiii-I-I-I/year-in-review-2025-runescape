@@ -21,7 +21,7 @@
         function changeThemes(event) {
             let theme = event.target.dataset.theme;
 
-            document.body.classList.remove('theme-rs', 'theme-osrs', 'theme-rsc');
+            document.body.classList.remove('theme-rs', 'theme-osrs');
             document.body.classList.add(theme);
         }
 

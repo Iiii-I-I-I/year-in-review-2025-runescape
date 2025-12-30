@@ -74,16 +74,6 @@ body.theme-osrs {
     --base-hue: 95deg;
 }
 
-body.theme-rsc {
-    --base-hue: 150deg;
-}
-
-@supports (font-variation-settings: normal) {
-    body {
-        --font-stack: 'InterVariable', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
-    }
-}
-
 h1 {
     color: var(--text-01);
     font-weight: 800;
@@ -152,6 +142,12 @@ strong {
     }
 }
 
+@supports (font-variation-settings: normal) {
+    body {
+        --font-stack: 'InterVariable', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+    }
+}
+
 /* --------------
        HEADER
    -------------- */
@@ -184,22 +180,22 @@ header {
     font-size: calc(var(--header-size) * 4);
     font-weight: 850;
     letter-spacing: -0.03em;
-    margin: -0.06em 0 -0.03em;
+    margin: -0.06em 0;
 }
 
 .title-bottom {
-    font-size: calc(var(--header-size) * .66);
+    font-size: calc(var(--header-size) * 1.015);
     transform: translateX(.1em) translateZ(0); /* fix text jittering */
     letter-spacing: .02em;
 }
 
 .bottom-wiki a {
     text-decoration: none;
-    transition: var(--anim-med) ease-in-out;
+    transition: var(--anim-med) var(--ease-in-out-quad);
 }
 
 .bottom-wiki a:hover {
-    filter: brightness(.85) saturate(1.2);
+    filter: brightness(1.15) saturate(1.1);
 }
 
 .bottom-wiki + .bottom-wiki {
@@ -212,10 +208,6 @@ header {
 
 .bottom-osrs a {
     color: #c88312;
-}
-
-.bottom-rsc a {
-    color: #6baa01;
 }
 
 @media screen and (max-width: 900px), screen and (max-height: 900px) {
@@ -297,7 +289,7 @@ section .link {
 }
 
 .tab-switcher {
-    --tab-count: 3;
+    --tab-count: 2;
     --tab-gap: .45em;
     --border-radius: 75em;
 
@@ -312,7 +304,7 @@ section .link {
     box-shadow: var(--shadow-01);
 
     margin: 2em auto var(--section-padding);
-    max-width: 26em;
+    max-width: 19em;
 }
 
 .tab-switcher::before {
@@ -446,12 +438,8 @@ section .link {
 }
 
 @media screen and (max-width: 501px) {
-    .container,
-    .wiki-cards {
-        padding: 0 1em;
-    }
-
     .container {
+        padding: 0 1em;
         margin-top: 5em;
     }
 
