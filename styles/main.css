@@ -503,6 +503,8 @@ section .link {
 }
 
 .dygraph-graph {
+    --graph-height: 300px;
+
     position: relative; /* for .dygraph-y-labels */
 }
 
@@ -514,7 +516,7 @@ section .link {
 
 .dygraph-legend {
     position: absolute;
-    font-size: .8rem;
+    font-size: .8em;
     background-color: var(--bg-03);
     padding: 6px 8px 8px var(--range-pad);
     line-height: 1.4;
@@ -535,7 +537,7 @@ section .link {
     display: flex;
     justify-content: space-between;
     width: calc(100% - 8px);
-    font-size: .8rem;
+    font-size: .8em;
     margin-top: .5em;
     margin-left: 4px;
 }
@@ -550,36 +552,29 @@ section .link {
 }
 
 .dygraph-y-labels {
+    font-size: .7em;
+    color: var(--text-03);
+    letter-spacing: .05ch;
+    opacity: .8;
+
     position: absolute;
     pointer-events: none;
     bottom: 0;
-}
-
-.traffic .dygraph-y-labels {
-    right: calc(var(--range-pad) + 5px);
-}
-
-.edits .dygraph-y-labels {
-    left: var(--range-pad);
+    right: var(--range-pad);
 }
 
 .y-label {
     display: flex;
-    font-size: .7rem;
-    color: var(--text-03);
-    letter-spacing: .05ch;
-    opacity: .8;
+    align-items: flex-end;
+    justify-content: flex-end;
 }
 
 .traffic .y-label {
-    align-items: flex-end;
-    justify-content: flex-end;
-    height: calc(300px / 6.5);
+    height: calc(var(--graph-height) / 6.5); /* divide by number of y-axis units */
 }
 
 .edits .y-label {
-    align-items: flex-end;
-    height: calc(300px / 4.6);
+    height: calc(var(--graph-height) / 4.6); /* divide by number of y-axis units */
 }
 
 .dygraph-annotation {
@@ -600,36 +595,35 @@ section .link {
 
 .tooltip {
     --tooltip-width: 200px;
+    --tooltip-arrow-width: 10px;
+    --annotation-width: 24px; /* must match createAnnotations() width value */
 
     position: absolute;
-    left: calc(var(--tooltip-width) / -2 + 12px); /* move left half of tooltip width + half of annotation width */
-    bottom: 35px;
+    left: calc(var(--tooltip-width) / -2 + var(--annotation-width) / 2); /* center tooltip above annotation circle */
+    bottom: calc(var(--annotation-width) + var(--tooltip-arrow-width) + 4px); /* 4px gap between annotation and tooltip */
     opacity: 1;
-    transform: translate3d(0, 0, 0);
+    transform: translateY(0);
     transition: .25s var(--ease-out-quad);
     z-index: 2;
 
     color: var(--text-02);
     background-color: var(--bg-02);
     font-weight: normal;
-    text-align: left;
     line-height: 1.3;
     border-radius: calc(var(--border-radius) * .7);
-    width: 200px;
+    width: var(--tooltip-width);
     padding: .75em 1em;
     pointer-events: none;
 }
 
 .tooltip::before {
-    --arrow-width: 8px;
-
     content: '';
     position: absolute;
-    border-top: var(--arrow-width) solid var(--bg-02);
-    border-left: var(--arrow-width) solid transparent;
-    border-right: var(--arrow-width) solid transparent;
+    border-top: var(--tooltip-arrow-width) solid var(--bg-02);
+    border-left: var(--tooltip-arrow-width) solid transparent;
+    border-right: var(--tooltip-arrow-width) solid transparent;
     top: 100%;
-    left: calc(100px - var(--arrow-width)); /* move right half of tooltip width - tooltip arrow width */
+    left: calc(var(--tooltip-width) / 2 - var(--tooltip-arrow-width)); /* center arrow under tooltip */
 }
 
 .tooltip-date {
