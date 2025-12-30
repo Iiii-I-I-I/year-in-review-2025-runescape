@@ -456,10 +456,6 @@ section .link {
         margin: -0.25rem 1.5rem 0 0;
     }
 
-    .change {
-        clear: both;
-    }
-
     .stat-icon {
         display: none;
     }
@@ -497,6 +493,7 @@ section .link {
 }
 
 .dygraph-title {
+    color: var(--text-01);
     font-size: .95em;
     font-weight: bold;
     margin: 0 0 .25em var(--range-pad);
@@ -514,11 +511,8 @@ section .link {
 }
 
 .dygraph-legend-date {
+    color: var(--text-01);
     font-weight: bold;
-}
-
-.dygraph-legend-change {
-    color: var(--text-03);
 }
 
 .dygraph-x-labels {

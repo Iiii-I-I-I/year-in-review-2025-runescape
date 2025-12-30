@@ -94,16 +94,14 @@
                 event.target.dispatchEvent(simulation);
             }
         };
-        const legendFormatter = (data, legendLabel) => {
+        const legendFormatter = (data, units) => {
             if (!data.x) return '';
 
             const date = new Date(data.xHTML).toLocaleString(config.locale, config.dateOptions);
-            const average = data.series[0].yHTML.average;
-            const change = data.series[0].yHTML.change;
+            const count = data.series[0].yHTML.average;
 
             return `<div class="dygraph-legend-date">${date}</div>` +
-                   `<div class="dygraph-legend-views">${legendLabel}: ${average}</div>` +
-                   `<div class="dygraph-legend-change">7-day change: ${change}</div>`;
+                   `<div class="dygraph-legend-count">${units}: ${count}</div>`;
         };
         const annotationMouseOverHandler = (annotation) => {
             annotation.div.classList.remove('tooltip-hidden');
@@ -114,7 +112,7 @@
             annotation.div.style.removeProperty('z-index');
         };
 
-        function basicGraphConfig(containerSelector, legendLabel, lineColor) {
+        function basicGraphConfig(containerSelector, units, lineColor) {
             return {
                 color: lineColor,
                 strokeWidth: 3,
@@ -127,7 +125,7 @@
                 labelsDiv: get(`${containerSelector} .dygraph-legend`),
                 rollPeriod: 7,
                 fillGraph: true,
-                legendFormatter: (data) => legendFormatter(data, legendLabel),
+                legendFormatter: (data) => legendFormatter(data, units),
                 interactionModel: touchInteractionModel,
                 annotationMouseOverHandler: (annotation) => annotationMouseOverHandler(annotation),
                 annotationMouseOutHandler: (annotation) => annotationMouseOutHandler(annotation),
@@ -170,30 +168,18 @@
             get(`${containerSelector} .dygraph-graph`).appendChild(yAxisLabels);
         }
 
-        function calculate7DayChange(currentValue, previousValue, row) {
-            if (row < 7) return 'N/A';
-
-            const change = Math.round((currentValue - previousValue) / previousValue * 100);
-            const sign = change < 0 ? '−' : '+';
-
-            return sign + Math.abs(change) + '%';
-        }
-
         function createValueFormatter(locale) {
             return function(num, opts, series, graph, row, col) {
                 const currentValue = graph.getValue(row, col);
-                const oneWeekAgo = graph.getValue(row - 7, col);
-                const change = calculate7DayChange(currentValue, oneWeekAgo, row);
 
                 return {
                     actual: currentValue.toLocaleString(locale),
                     average: Math.round(num).toLocaleString(locale),
-                    change: change
                 };
             };
         }
 
-        function createAnnotations(annotations, seriesName) {
+        function createAnnotations(seriesName, annotations) {
             // set basic properties for all annotations
             return annotations.map((annotation, i) => {
                 return {
@@ -242,7 +228,7 @@
         //      TRAFFIC
         // =================
 
-        const trafficAnnotations = createAnnotations([
+        const trafficAnnotations = createAnnotations('Pageviews', [
             { x: "2021/01/04", text: "RuneScape's 20th anniversary events begin" },
             { x: "2021/02/22", text: "RuneScape: Azzanadra's Quest is released" },
             { x: "2021/05/26", text: "Old School: Clans system is released" },
@@ -251,7 +237,7 @@
             { x: "2021/10/06", text: "Old School: Group Ironman Mode is released", tickHeight: 33 },
             { x: "2021/10/25", text: "RuneScape: TzekHaar Front is released" },
             { x: "2021/11/25", text: "Old School: Android client beta testing begins" },
-        ], 'Pageviews');
+        ]);
         const trafficGraphConfig = {
             ...basicGraphConfig('.traffic', 'Views', 'hsl(18.65, 91.72%, 63.78%)'),
             drawCallback: (dygraph, isInitial) => {
@@ -282,10 +268,20 @@
         //       EDITS
         // =================
 
+        const editsAnnotations = createAnnotations('Edits', [
+            { x: "2021/01/04", text: "RuneScape's 20th anniversary events begin" },
+            { x: "2021/02/22", text: "RuneScape: Azzanadra's Quest is released" },
+            { x: "2021/07/26", text: "RuneScape: Nodon Front is released" },
+            { x: "2021/08/18", text: "Is this annotation too high?", tickHeight: 180 },
+            { x: "2021/10/25", text: "RuneScape: TzekHaar Front is released" },
+            { x: "2021/11/25", text: "Old School: Android client beta testing begins" },
+        ]);
         const editsGraphConfig = {
             ...basicGraphConfig('.edits', 'Edits', 'hsl(139.76, 69.67%, 47.84%)'),
             drawCallback: (dygraph, isInitial) => {
                 if (isInitial) {
+                    dygraph.setAnnotations(editsAnnotations);
+                    appendTooltips('.edits', editsAnnotations);
                     appendXAxisLabels('.edits'); // units are months
                     appendYAxisLabels('.edits', 4, 'k'); // units are thousands of edits
                 }
