@@ -307,54 +307,6 @@
         );
     }
 
-    function initModal() {
-        let pictures = getAll('picture');
-        let src = 'srcFull';
-
-        // use different image depending on if user's display supports P3
-        // <https://webkit.org/blog/10042/wide-gamut-color-in-css-with-display-p3/>
-        // if (window.matchMedia('(color-gamut: p3)').matches) src = 'srcFullP3';
-
-        for (let picture of pictures) {
-            picture.addEventListener('mouseover', preloadFullImage, { once: true });
-            picture.addEventListener('click', openModal, false);
-        }
-
-        function preloadFullImage(event) {
-            let preloader = document.createElement('link');
-
-            preloader.href = event.currentTarget.dataset[src];
-            preloader.rel = 'preload';
-            preloader.as = 'image';
-
-            document.head.appendChild(preloader);
-        }
-
-        function openModal(event) {
-            let modalTemplate = get('.template-modal').content.cloneNode(true),
-                modal = get('.modal', modalTemplate),
-                image = get('.full-image', modalTemplate);
-
-            modal.addEventListener('click', closeModal, false);
-            image.src = event.currentTarget.dataset[src];
-
-            //document.body.style.overflow = 'hidden';
-            document.body.appendChild(modalTemplate);
-            document.addEventListener('keydown', escToClose, false);
-        }
-
-        function closeModal() {
-            get('.modal').remove();
-            //document.body.removeAttribute('style'); // unset overflow: hidden
-            document.removeEventListener('keydown', escToClose, false);
-        }
-
-        function escToClose(event) {
-            if (event.code === 'Escape') closeModal();
-        }
-    }
-
     initTabs();
     initGraphs();
-    initModal();
 }());
