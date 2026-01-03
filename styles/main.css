@@ -683,7 +683,7 @@ section .link {
 .updates-tile li + li {
     margin-top: .35em;
     padding-top: .35em;
-    border-top: 0.125em dotted var(--text-03);
+    border-top: 1px solid hsl(from var(--text-03) h s l / .4);
 }
 
 .li-container {
