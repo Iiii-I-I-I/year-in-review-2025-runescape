@@ -771,7 +771,7 @@ section .link {
 
 .bar-chart-container {
     --variant-regular: #3b82f6;
-    --variant-prime: #dfcf23;
+    --variant-prime: #ddc20d;
     --variant-umbra: #8b5cf6;
 
     font-size: .9em;
@@ -785,7 +785,7 @@ section .link {
 }
 
 .chart-row + .chart-row {
-    margin-top: 1.2em;
+    margin-top: 1em;
 }
 
 .warframe-test {
@@ -804,17 +804,18 @@ section .link {
 }
 
 .bar-container {
-    --bar-border-radius: calc(var(--border-radius) * .3);
+    --bar-border-radius: calc(var(--border-radius) * .2);
 
     display: flex;
     flex: 1;
     background-color: var(--bg-02);
     border-radius: var(--bar-border-radius);
-    height: 1.5em;
+    height: 1.25em;
 }
 
 .bar-segment {
-    position: relative;
+    position: relative; /* for tooltip */
+    box-shadow: var(--border-inset);
 }
 
 .bar-segment:first-child {

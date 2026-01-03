@@ -304,16 +304,8 @@
     }
 
     function initBarCharts() {
-        function calculateTotal(warframe) {
+        function calculateTotalPageviews(warframe) {
             return warframe.variants.reduce((sum, v) => sum + v.pageviews, 0);
-        }
-
-        function sortByPageviews(data) {
-            return [...data].sort((a, b) => calculateTotal(b) - calculateTotal(a));
-        }
-
-        function getMaxTotal(data) {
-            return Math.max(...data.map(wf => calculateTotal(wf)));
         }
 
         function createLabel(text) {
@@ -363,7 +355,7 @@
                 row.classList.add('new-warframe');
             }
 
-            const total = calculateTotal(warframe);
+            const total = calculateTotalPageviews(warframe);
 
             row.appendChild(createLabel(warframe.name));
             row.appendChild(createBarContainer(warframe.variants, maxTotal, tooltip));
@@ -383,10 +375,6 @@
         }
 
         function showTooltip(segment, variant, tooltip) {
-            const rect = segment.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const topY = rect.top;
-
             tooltip.querySelector('.bar-tooltip-name').textContent = variant.name;
             tooltip.querySelector('.bar-tooltip-views').textContent = variant.pageviews.toLocaleString() + ' views';
 
@@ -395,16 +383,11 @@
         }
 
         function renderStackedBarChart(data, container, tooltip) {
-            // Clear existing content
-            // container.innerHTML = '';
+            const sortedData = [...data].sort((a, b) => calculateTotalPageviews(b) - calculateTotalPageviews(a));
+            const maxTotalPageviews = Math.max(...sortedData.map(wf => calculateTotalPageviews(wf)));
 
-            // Process data
-            const sortedData = sortByPageviews(data);
-            const maxTotal = getMaxTotal(sortedData);
-
-            // Render rows
             sortedData.forEach(warframe => {
-                const row = createChartRow(warframe, maxTotal, tooltip);
+                const row = createChartRow(warframe, maxTotalPageviews, tooltip);
                 container.appendChild(row);
             });
         }
