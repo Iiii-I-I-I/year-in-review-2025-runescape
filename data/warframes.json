@@ -1,0 +1,50 @@
+[
+	{
+		"name": "Excalibur",
+		"isNew": false,
+		"variants": [
+			{ "name": "Excalibur", "pageviews": 45000 },
+			{ "name": "Excalibur Prime", "pageviews": 32000 },
+			{ "name": "Excalibur Umbra", "pageviews": 28000 }
+		]
+	},
+	{
+		"name": "Kullervo",
+		"isNew": false,
+		"variants": [
+			{ "name": "Kullervo", "pageviews": 52000 }
+		]
+	},
+	{
+		"name": "Mag",
+		"isNew": false,
+		"variants": [
+			{ "name": "Mag", "pageviews": 38000 },
+			{ "name": "Mag Prime", "pageviews": 25000 }
+		]
+	},
+	{
+		"name": "Volt",
+		"isNew": false,
+		"variants": [
+			{ "name": "Volt", "pageviews": 41000 },
+			{ "name": "Volt Prime", "pageviews": 29000 }
+		]
+	},
+	{
+		"name": "Wisp",
+		"isNew": true,
+		"variants": [
+			{ "name": "Wisp", "pageviews": 67000 },
+			{ "name": "Wisp Prime", "pageviews": 44000 }
+		]
+	},
+	{
+		"name": "Nezha",
+		"isNew": false,
+		"variants": [
+			{ "name": "Nezha", "pageviews": 33000 },
+			{ "name": "Nezha Prime", "pageviews": 39000 }
+		]
+	}
+]

@@ -303,6 +303,130 @@
         );
     }
 
+    function initBarCharts() {
+        function calculateTotal(warframe) {
+            return warframe.variants.reduce((sum, v) => sum + v.pageviews, 0);
+        }
+
+        function sortByPageviews(data) {
+            return [...data].sort((a, b) => calculateTotal(b) - calculateTotal(a));
+        }
+
+        function getMaxTotal(data) {
+            return Math.max(...data.map(wf => calculateTotal(wf)));
+        }
+
+        function createLabel(text) {
+            const label = document.createElement('div');
+            label.className = 'warframe-label';
+            label.textContent = text;
+
+            return label;
+        }
+
+        function createTotalDisplay(total) {
+            const totalViews = document.createElement('div');
+            totalViews.className = 'total-views';
+            totalViews.textContent = total.toLocaleString();
+
+            return totalViews;
+        }
+
+        function createBarSegment(variant, maxTotal, tooltip) {
+            const segment = document.createElement('div');
+            const percentage = (variant.pageviews / maxTotal) * 100;
+
+            segment.className = 'bar-segment';
+            segment.style.width = percentage + '%';
+            attachTooltipEvents(segment, variant, tooltip);
+
+            return segment;
+        }
+
+        function createBarContainer(variants, maxTotal, tooltip) {
+            const barContainer = document.createElement('div');
+            barContainer.className = 'bar-container';
+
+            variants.forEach(variant => {
+                const segment = createBarSegment(variant, maxTotal, tooltip);
+                barContainer.appendChild(segment);
+            });
+
+            return barContainer;
+        }
+
+        function createChartRow(warframe, maxTotal, tooltip) {
+            const row = document.createElement('div');
+            row.className = 'chart-row';
+
+            if (warframe.isNew) {
+                row.classList.add('new-warframe');
+            }
+
+            const total = calculateTotal(warframe);
+
+            row.appendChild(createLabel(warframe.name));
+            row.appendChild(createBarContainer(warframe.variants, maxTotal, tooltip));
+            row.appendChild(createTotalDisplay(total));
+
+            return row;
+        }
+
+        function attachTooltipEvents(segment, variant, tooltip) {
+            segment.addEventListener('mouseenter', () => {
+                showTooltip(segment, variant, tooltip);
+            });
+
+            segment.addEventListener('mouseleave', () => {
+                tooltip.classList.remove('visible');
+            });
+        }
+
+        function showTooltip(segment, variant, tooltip) {
+            const rect = segment.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const topY = rect.top;
+
+            tooltip.querySelector('.bar-tooltip-name').textContent = variant.name;
+            tooltip.querySelector('.bar-tooltip-views').textContent = variant.pageviews.toLocaleString() + ' views';
+
+            tooltip.classList.add('visible');
+            segment.appendChild(tooltip);
+        }
+
+        function renderStackedBarChart(data, container, tooltip) {
+            // Clear existing content
+            // container.innerHTML = '';
+
+            // Process data
+            const sortedData = sortByPageviews(data);
+            const maxTotal = getMaxTotal(sortedData);
+
+            // Render rows
+            sortedData.forEach(warframe => {
+                const row = createChartRow(warframe, maxTotal, tooltip);
+                container.appendChild(row);
+            });
+        }
+
+        function loadAndRenderChart(jsonUrl, container, tooltip) {
+            fetch(jsonUrl)
+                .then(response => response.json())
+                .then(data => renderStackedBarChart(data, container, tooltip))
+                .catch(error => {
+                    console.error('Error loading chart data: ', error);
+                    container.innerHTML = '<p>Error loading chart data</p>';
+                });
+        }
+
+        loadAndRenderChart(
+            './data/warframes.json',
+            get('.warframe-test .bar-chart-container'),
+            get('.bar-tooltip.warframe-test-tooltip')
+        );
+    }
+
     initTabs();
     initGraphs();
+    initBarCharts();
 }());

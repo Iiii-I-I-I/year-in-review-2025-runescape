@@ -260,9 +260,12 @@ section .link {
     --section-color: hsl(203.11, 100%, 70.25%);
 }
 
+.section-chart {
+    --section-color: hsl(251.14, 100%, 75.75%);
+}
+
 .section-closing {
     --section-color: hsl(48.5, 75.9%, 64.74%);
-    /* --section-color: hsl(203.11, 100%, 70.25%); */
 }
 
 @media screen and (max-width: 900px) {
@@ -495,7 +498,7 @@ section .link {
 
 .dygraph-title {
     color: var(--text-01);
-    font-size: .95em;
+    font-size: 1.1em;
     font-weight: bold;
     margin: 0 0 .25em var(--range-pad);
 }
@@ -661,7 +664,7 @@ section .link {
 }
 
 .updates-tile + .updates-tile {
-    margin-top: 2em;
+    margin-top: 2.5em;
 }
 
 .byline {
@@ -760,6 +763,130 @@ section .link {
     .li-number::after {
         content: ' views';
     }
+}
+
+/* --------------
+       CHART
+   -------------- */
+
+.bar-chart-container {
+    --variant-regular: #3b82f6;
+    --variant-prime: #dfcf23;
+    --variant-umbra: #8b5cf6;
+
+    font-size: .9em;
+    margin: 1.5em 0 1em;
+}
+
+.chart-row {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.chart-row + .chart-row {
+    margin-top: 1.2em;
+}
+
+.warframe-test {
+    position: relative;
+}
+
+.chart-row.new-warframe .warframe-label {
+    color: hsl(120, 72%, 41%);
+    font-weight: bold;
+}
+
+.warframe-label {
+    width: 100px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.bar-container {
+    --bar-border-radius: calc(var(--border-radius) * .3);
+
+    display: flex;
+    flex: 1;
+    background-color: var(--bg-02);
+    border-radius: var(--bar-border-radius);
+    height: 1.5em;
+}
+
+.bar-segment {
+    position: relative;
+}
+
+.bar-segment:first-child {
+    border-top-left-radius: var(--bar-border-radius);
+    border-bottom-left-radius: var(--bar-border-radius);
+}
+
+.bar-segment:last-child {
+    border-top-right-radius: var(--bar-border-radius);
+    border-bottom-right-radius: var(--bar-border-radius);
+}
+
+.bar-segment:nth-child(1) {
+    background: var(--variant-regular);
+}
+
+.bar-segment:nth-child(2) {
+    background: var(--variant-prime);
+}
+
+.bar-segment:nth-child(3) {
+    background: var(--variant-umbra);
+}
+
+.total-views {
+    width: 100px;
+    flex-shrink: 0;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.bar-tooltip {
+    --tooltip-arrow-width: 10px;
+
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: calc(100% + var(--tooltip-arrow-width) - 4px); /* 4px gap between annotation and tooltip */
+    transform: translateX(-50%);
+
+    color: var(--text-02);
+    background-color: var(--bg-02);
+    line-height: 1.3;
+    border-radius: calc(var(--border-radius) * .5);
+    padding: .75em 1.2em;
+
+    font-size: .9em;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+.bar-tooltip::after {
+    content: '';
+    position: absolute;
+    border-top: var(--tooltip-arrow-width) solid var(--bg-02);
+    border-left: var(--tooltip-arrow-width) solid transparent;
+    border-right: var(--tooltip-arrow-width) solid transparent;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.bar-tooltip.visible {
+    display: initial;
+}
+
+.bar-tooltip-name {
+    color: var(--text-01);
+    font-weight: bold;
+    margin-bottom: .2em;
 }
 
 /* --------------

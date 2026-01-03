@@ -43,11 +43,11 @@
         <p>As you scroll, you can use the buttons below to switch between statistics displayed for the <strong>RuneScape Wiki</strong> (including its Portuguese version) and the <strong>Old School RuneScape Wiki</strong>.</p>
 
         <div class="tab-switcher" role="tablist" style="--index: 0">
-            <button class="tab tab-rs" role="tab" aria-selected="true" data-theme="theme-rs" data-controls="panel-rs">
+            <button class="tab tab-rs" aria-selected="true" data-theme="theme-rs" data-controls="panel-rs">
                 <span class="label-long">RuneScape</span>
                 <span class="label-short">RS</span>
             </button>
-            <button class="tab tab-osrs" role="tab" aria-selected="false" data-theme="theme-osrs" data-controls="panel-osrs">
+            <button class="tab tab-osrs" aria-selected="false" data-theme="theme-osrs" data-controls="panel-osrs">
                 <span class="label-long">Old School</span>
                 <span class="label-short">OSRS</span>
             </button>
@@ -69,7 +69,7 @@
             <p>The following is a more detailed per-wiki breakdown of pageviews, visitors, and other statistics. (The RuneScape Classic Wiki still gets a few hundred thousand visits each year, despite the game being defunct.)</p>
 
             <div class="tab-container">
-                <div class="tab-panel panel-rs" role="tabpanel" data-controlledby="tab-rs">
+                <div class="tab-panel panel-rs" data-controlledby="tab-rs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid section-rs">
                         <div class="stat">
@@ -95,7 +95,7 @@
                     </div>
                 </div>
 
-                <div class="tab-panel panel-osrs" role="tabpanel" data-controlledby="tab-osrs" hidden>
+                <div class="tab-panel panel-osrs" data-controlledby="tab-osrs" hidden>
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid section-osrs">
                         <div class="stat">
@@ -132,7 +132,7 @@
             <p>Other times, peaks in editing are due to new projects getting started, independent of any update. For example, the large spike in late August was caused by a single user uploading thousands of detailed item images and historical graphical update images to the Old School RuneScape Wiki.</p>
 
             <div class="dygraph-container edits">
-                <div class="dygraph-title">Daily edits <span style="opacity: .7">(7-day rolling avg.)</span></div>
+                <div class="dygraph-title">Daily edits <span style="color: var(--text-03)">(7-day rolling avg.)</span></div>
                 <div class="dygraph-legend"></div>
                 <div class="dygraph-graph" style="width: 100%; height: 300px"></div>
                 <div class="dygraph-x-labels"></div>
@@ -141,7 +141,7 @@
             <p>The wiki's greatest strength has always been its editors, from regular contributors to anonymous users who fix typos. Whether it's adding an image, covering a new update, or helping write a guide, we owe our success to every player (which may include you!) who reads and edits the site.</p>
 
             <div class="tab-container">
-                <div class="tab-panel panel-rs" role="tabpanel" data-controlledby="tab-rs">
+                <div class="tab-panel panel-rs" data-controlledby="tab-rs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid">
                         <div class="stat">
@@ -167,7 +167,7 @@
                     </div>
                 </div>
 
-                <div class="tab-panel panel-osrs" role="tabpanel" data-controlledby="tab-osrs" hidden>
+                <div class="tab-panel panel-osrs" data-controlledby="tab-osrs" hidden>
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="stats-grid">
                         <div class="stat">
@@ -202,7 +202,7 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia ante urna, eu condimentum quam sagittis vitae.</p>
 
             <div class="tab-container">
-                <div class="tab-panel panel-rs" role="tabpanel" data-controlledby="tab-rs">
+                <div class="tab-panel panel-rs" data-controlledby="tab-rs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
 
                     <div class="updates-tile eclipse-of-the-heart">
@@ -346,7 +346,7 @@
                     </div>
                 </div>
 
-                <div class="tab-panel panel-osrs" role="tabpanel" data-controlledby="tab-osrs" hidden>
+                <div class="tab-panel panel-osrs" data-controlledby="tab-osrs" hidden>
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
 
                     <div class="updates-tile grid-master">
@@ -492,6 +492,20 @@
             </div>
         </section>
 
+        <!-- BAR CHART TEST -->
+        <section class="section-chart" id="chart">
+            <h2>Bar chart test</h2>
+
+            <div class="dygraph-container warframe-test">
+                <div class="dygraph-title">Most viewed Warframes</div>
+                <div class="bar-chart-container"></div>
+            </div>
+            <div class="bar-tooltip warframe-test-tooltip">
+                <div class="bar-tooltip-name"></div>
+                <div class="bar-tooltip-views"></div>
+            </div>
+        </section>
+
         <!-- CLOSING -->
         <section class="section-closing" id="closing">
             <h2>Thank you!</h2>
@@ -499,7 +513,7 @@
             <p>2021 was a year full of unique trials &mdash; we're looking forward to covering new game content coming in 2022. Whether it's Het's Oasis, the Shattered Relics League, or the Trade Octagon minigame, we hope you'll check out the wikis as you play and help your fellow gamers document every rat in RuneScape.</p>
             <p>If you want to get involved with the wikis, there's always work to do and new projects are being started all the time. If you haven't edited before and aren't sure where to start, join <a class="link" target="_blank" rel="noopener" href="https://discord.com/invite/runescapewiki">our Discord server</a> or follow us <a class="link" target="_blank" rel="noopener" href="https://twitter.com/rswiki">@RSWiki</a> and <a class="link" target="_blank" rel="noopener" href="https://twitter.com/osrs_wiki">@OSRS_Wiki</a>.</p>
 
-            <p class="signature"><strong>The RuneScape Wikis<br />7 January 2026</strong><p>
+            <p class="signature"><strong>The RuneScape Wikis<br>7 January 2026</strong><p>
         </section>
 
         </div>
