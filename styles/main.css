@@ -655,7 +655,7 @@ section .link {
 
 .updates-tile {
     position: relative;
-    padding: 2.25em 8em 2.25em 2.75em;
+    padding: 2.25em 2.75em;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-03), var(--border-inset);
 }
@@ -668,14 +668,19 @@ section .link {
     color: var(--text-03);
 }
 
+.updates-tile > * {
+    max-width: 30em;
+}
+
 .updates-tile ol {
     margin-top: 1.5em;
     margin-bottom: 0;
-    max-width: 28em;
 }
 
 .updates-tile li + li {
     margin-top: .35em;
+    padding-top: .35em;
+    border-top: 0.125em dotted var(--text-03);
 }
 
 .li-container {
@@ -684,12 +689,18 @@ section .link {
 }
 
 .li-number {
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.updates-tile li:first-of-type .li-number::after {
+    content: ' views';
 }
 
 /* background images */
 .updates-tile::before {
-    --upper-gradient: linear-gradient(120deg, var(--bg-03) 40%, transparent 95%);
+    --upper-gradient: linear-gradient(120deg, var(--bg-03) 45%, transparent);
 
     content: '';
     position: absolute;
@@ -706,10 +717,12 @@ section .link {
     image-rendering: crisp-edges;
 }
 
+/* TODO: create downrezzed jpgs of background images */
 .eclipse-of-the-heart::before {
     background-image:
         var(--upper-gradient),
         url('https://runescape.wiki/images/Eclipse_of_the_Heart_-_Gathered_Forces.png?f299e');
+    background-position: 20%;
     background-size: cover;
 }
 
@@ -735,21 +748,17 @@ section .link {
     background-position: 0% 35%;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 700px) {
     .updates-tile {
-        padding: 1.25em 1.5em;
+        padding: 1.5em 1.75em;
     }
 
     .li-container {
         display: initial;
     }
 
-    .li-container div::before {
-        content: '(';
-    }
-
-    .li-container div::after {
-        content: ' views)';
+    .li-number::after {
+        content: ' views';
     }
 }
 
