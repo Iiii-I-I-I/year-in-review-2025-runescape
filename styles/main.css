@@ -475,7 +475,7 @@ section .link {
        DYGRAPH
    -------------- */
 
-.dygraph-container {
+.graph-container {
     --range-pad: 7px; /* must be >= xRangePad option for dygraph in main.js */
 
     background-color: var(--bg-03);
@@ -486,26 +486,26 @@ section .link {
     position: relative;
 }
 
-.tab-switcher-note + .dygraph-container {
+.tab-switcher-note + .graph-container {
     margin-top: 0;
 }
 
-.dygraph-graph {
+.graph {
     --graph-height: 300px;
 
-    position: relative; /* for .dygraph-y-labels */
+    position: relative; /* for .graph-y-labels */
 }
 
-.dygraph-title {
+.graph-title {
     color: var(--text-01);
     font-size: 1.1em;
     font-weight: bold;
-    margin: 0 0 .25em var(--range-pad);
+    margin: 0 0 .25em;
 }
 
-.dygraph-legend {
+.graph-legend {
     position: absolute;
-    font-size: .8em;
+    font-size: .85em;
     background-color: var(--bg-03);
     padding: 6px 8px 8px var(--range-pad);
     line-height: 1.4;
@@ -514,16 +514,16 @@ section .link {
     z-index: 1;
 }
 
-.dygraph-legend-date {
+.graph-legend-date {
     color: var(--text-01);
     font-weight: bold;
 }
 
-.dygraph-x-labels {
+.graph-x-labels {
     display: flex;
     justify-content: space-between;
     width: calc(100% - 8px);
-    font-size: .8em;
+    font-size: .75em;
     margin-top: .5em;
     margin-left: 4px;
 }
@@ -537,8 +537,8 @@ section .link {
     display: none;
 }
 
-.dygraph-y-labels {
-    font-size: .7em;
+.graph-y-labels {
+    font-size: .75em;
     color: var(--text-03);
     letter-spacing: .05ch;
     opacity: .8;
@@ -580,24 +580,25 @@ section .link {
 }
 
 .tooltip {
-    --tooltip-width: 200px;
+    --tooltip-bg: hsl(from var(--bg-03) h calc(s - 8) calc(l + 8));
     --tooltip-arrow-width: 10px;
-    --annotation-width: 24px; /* must match createAnnotations() width value */
 
     position: absolute;
-    left: calc(var(--tooltip-width) / -2 + var(--annotation-width) / 2); /* center tooltip above annotation circle */
-    bottom: calc(var(--annotation-width) + var(--tooltip-arrow-width) + 4px); /* 4px gap between annotation and tooltip */
-    opacity: 1;
-    transform: translateY(0);
+    left: 50%;
+    bottom: calc(100% + var(--tooltip-arrow-width) + 2px); /* 2px gap between annotation and tooltip */
+    transform: translateX(-50%);
     transition: .25s var(--ease-out-quad);
     z-index: 2;
+    opacity: 1;
 
     color: var(--text-02);
-    background-color: var(--bg-02);
+    font-size: .8rem;
     font-weight: normal;
+    background-color: var(--tooltip-bg);
     line-height: 1.3;
-    border-radius: calc(var(--border-radius) * .7);
-    width: var(--tooltip-width);
+    border-radius: calc(var(--border-radius) * .6);
+    box-shadow: var(--shadow-03);
+    width: 200px;
     padding: .75em 1em;
     pointer-events: none;
 }
@@ -605,26 +606,32 @@ section .link {
 .tooltip::before {
     content: '';
     position: absolute;
-    border-top: var(--tooltip-arrow-width) solid var(--bg-02);
+    border-top: var(--tooltip-arrow-width) solid var(--tooltip-bg);
     border-left: var(--tooltip-arrow-width) solid transparent;
     border-right: var(--tooltip-arrow-width) solid transparent;
     top: 100%;
-    left: calc(var(--tooltip-width) / 2 - var(--tooltip-arrow-width)); /* center arrow under tooltip */
+    left: calc(50% - var(--tooltip-arrow-width)); /* center arrow under tooltip */
 }
 
-.tooltip-date {
+.bar-chart-container .tooltip {
+    width: fit-content;
+    max-width: 200px;
+    white-space: nowrap;
+}
+
+.tooltip-title {
     color: var(--text-01);
     font-weight: bold;
-    margin-bottom: .2em;
+    margin-bottom: .25em;
 }
 
 .tooltip-hidden .tooltip {
     opacity: 0;
-    transform: translateY(-3px);
+    transform: translateX(-50%) translateY(-0.3rem);
 }
 
 @media screen and (max-width: 600px) {
-    .dygraph-graph {
+    .graph {
         height: 250px !important;
     }
 
@@ -642,12 +649,12 @@ section .link {
 }
 
 @media screen and (max-width: 800px) {
-    .dygraph-container {
-        padding: 1em;
+    .graph-container {
+        padding: 1.5em;
         overflow-x: hidden; /* quick (bad) fix for annotation going offscreen on mobile */
     }
 
-    .dygraph-legend {
+    .graph-legend {
         left: 1rem;
     }
 }
@@ -692,7 +699,7 @@ section .link {
 }
 
 .li-number {
-    font-weight: 500;
+    font-size: .9em;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
@@ -753,7 +760,7 @@ section .link {
 
 @media screen and (max-width: 700px) {
     .updates-tile {
-        padding: 1.5em 1.75em;
+        padding: 1.5em;
     }
 
     .li-container {
@@ -775,7 +782,7 @@ section .link {
     --variant-umbra: #8b5cf6;
 
     font-size: .9em;
-    margin: 1.5em 0 1em;
+    margin: 1.75em 0 1.5em;
 }
 
 .chart-row {
@@ -788,19 +795,14 @@ section .link {
     margin-top: 1em;
 }
 
-.warframe-test {
-    position: relative;
-}
-
-.chart-row.new-warframe .warframe-label {
+.new .bar-label {
     color: hsl(120, 72%, 41%);
     font-weight: bold;
 }
 
-.warframe-label {
+.bar-label {
     width: 100px;
     text-align: right;
-    flex-shrink: 0;
 }
 
 .bar-container {
@@ -814,8 +816,30 @@ section .link {
 }
 
 .bar-segment {
+    --variant-regular: #3b82f6;
+    --variant-prime: #ddc20d;
+    --variant-umbra: #8b5cf6;
+
     position: relative; /* for tooltip */
+    background-color: var(--segment-color);
     box-shadow: var(--border-inset);
+    transition: background-color var(--anim-med) var(--ease-in-out-quad);
+}
+
+.bar-segment:nth-child(1) {
+    --segment-color: var(--variant-regular);
+}
+
+.bar-segment:nth-child(2) {
+    --segment-color: var(--variant-prime);
+}
+
+.bar-segment:nth-child(3) {
+    --segment-color: var(--variant-umbra);
+}
+
+.bar-segment:hover {
+    background-color: oklch(from var(--segment-color) calc(l + 0.075) calc(c + 0.075) h);
 }
 
 .bar-segment:first-child {
@@ -828,66 +852,26 @@ section .link {
     border-bottom-right-radius: var(--bar-border-radius);
 }
 
-.bar-segment:nth-child(1) {
-    background: var(--variant-regular);
-}
-
-.bar-segment:nth-child(2) {
-    background: var(--variant-prime);
-}
-
-.bar-segment:nth-child(3) {
-    background: var(--variant-umbra);
-}
-
 .total-views {
-    width: 100px;
-    flex-shrink: 0;
-    font-weight: 500;
+    font-size: .9em;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+    width: 100px;
 }
 
-.bar-tooltip {
-    --tooltip-arrow-width: 10px;
+@media screen and (max-width: 600px) {
+    .chart-row {
+        display: block;
+    }
 
-    display: none;
-    position: absolute;
-    left: 50%;
-    bottom: calc(100% + var(--tooltip-arrow-width) - 4px); /* 4px gap between annotation and tooltip */
-    transform: translateX(-50%);
+    .bar-label {
+        text-align: left;
+        margin-bottom: .2em;
+    }
 
-    color: var(--text-02);
-    background-color: var(--bg-02);
-    line-height: 1.3;
-    border-radius: calc(var(--border-radius) * .5);
-    padding: .75em 1.2em;
-
-    font-size: .9em;
-    pointer-events: none;
-    white-space: nowrap;
-    z-index: 100;
-}
-
-.bar-tooltip::after {
-    content: '';
-    position: absolute;
-    border-top: var(--tooltip-arrow-width) solid var(--bg-02);
-    border-left: var(--tooltip-arrow-width) solid transparent;
-    border-right: var(--tooltip-arrow-width) solid transparent;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.bar-tooltip.visible {
-    display: initial;
-}
-
-.bar-tooltip-name {
-    color: var(--text-01);
-    font-weight: bold;
-    margin-bottom: .2em;
+    .total-views {
+        display: none;
+    }
 }
 
 /* --------------

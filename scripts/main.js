@@ -100,8 +100,8 @@
             const date = new Date(data.xHTML).toLocaleString(config.locale, config.dateOptions);
             const count = data.series[0].yHTML.average;
 
-            return `<div class="dygraph-legend-date">${date}</div>` +
-                   `<div class="dygraph-legend-count">${units}: ${count}</div>`;
+            return `<div class="graph-legend-date">${date}</div>` +
+                   `<div class="graph-legend-count">${units}: ${count}</div>`;
         };
         const annotationMouseOverHandler = (annotation) => {
             annotation.div.classList.remove('tooltip-hidden');
@@ -122,7 +122,7 @@
                 gridLineWidth: 1,
                 highlightCircleSize: 5,
                 xRangePad: 4,
-                labelsDiv: get(`${containerSelector} .dygraph-legend`),
+                labelsDiv: get(`${containerSelector} .graph-legend`),
                 rollPeriod: 7,
                 fillGraph: true,
                 legendFormatter: (data) => legendFormatter(data, units),
@@ -133,7 +133,7 @@
         }
 
         function appendXAxisLabels(containerSelector) {
-            const xAxisLabels = get(`${containerSelector} .dygraph-x-labels`);
+            const xAxisLabels = get(`${containerSelector} .graph-x-labels`);
 
             for (let i = 0; i < 12; i++) {
                 const month = new Date(2021, i).toLocaleString(config.locale, { month: 'short' });
@@ -156,7 +156,7 @@
         function appendYAxisLabels(containerSelector, maxValue, unit) {
             const yAxisLabels = document.createElement('div');
 
-            yAxisLabels.classList.add('dygraph-y-labels');
+            yAxisLabels.classList.add('graph-y-labels');
 
             for (let i = maxValue; i >= 0; i--) {
                 const viewLabel = document.createElement('div');
@@ -165,7 +165,7 @@
                 yAxisLabels.appendChild(viewLabel);
             }
 
-            get(`${containerSelector} .dygraph-graph`).appendChild(yAxisLabels);
+            get(`${containerSelector} .graph`).appendChild(yAxisLabels);
         }
 
         function createValueFormatter(locale) {
@@ -197,15 +197,15 @@
 
         function createTooltip(date, text) {
             const tooltip = document.createElement('div');
-            const dateNode = document.createElement('div');
+            const titleNode = document.createElement('div');
             const textNode = document.createElement('div');
 
-            dateNode.classList.add('tooltip-date');
-            dateNode.textContent = new Date(date).toLocaleString(config.locale, config.dateOptions);
+            titleNode.classList.add('tooltip-title');
+            titleNode.textContent = new Date(date).toLocaleString(config.locale, config.dateOptions);
             textNode.textContent = text;
 
             tooltip.classList.add('tooltip');
-            tooltip.appendChild(dateNode);
+            tooltip.appendChild(titleNode);
             tooltip.appendChild(textNode);
 
             return tooltip;
@@ -259,7 +259,7 @@
         };
 
         new Dygraph(
-            get('.traffic .dygraph-graph'),
+            get('.traffic .graph'),
             './data/traffic.csv',
             trafficGraphConfig
         );
@@ -297,7 +297,7 @@
         };
 
         new Dygraph(
-            get('.edits .dygraph-graph'),
+            get('.edits .graph'),
             './data/edits.csv',
             editsGraphConfig
         );
@@ -308,15 +308,15 @@
             return warframe.variants.reduce((sum, v) => sum + v.pageviews, 0);
         }
 
-        function createLabel(text) {
+        function createBarLabel(text) {
             const label = document.createElement('div');
-            label.className = 'warframe-label';
+            label.className = 'bar-label';
             label.textContent = text;
 
             return label;
         }
 
-        function createTotalDisplay(total) {
+        function createBarTotal(total) {
             const totalViews = document.createElement('div');
             totalViews.className = 'total-views';
             totalViews.textContent = total.toLocaleString();
@@ -352,14 +352,14 @@
             row.className = 'chart-row';
 
             if (warframe.isNew) {
-                row.classList.add('new-warframe');
+                row.classList.add('new');
             }
 
             const total = calculateTotalPageviews(warframe);
 
-            row.appendChild(createLabel(warframe.name));
+            row.appendChild(createBarLabel(warframe.name));
             row.appendChild(createBarContainer(warframe.variants, maxTotal, tooltip));
-            row.appendChild(createTotalDisplay(total));
+            row.appendChild(createBarTotal(total));
 
             return row;
         }
@@ -370,16 +370,16 @@
             });
 
             segment.addEventListener('mouseleave', () => {
-                tooltip.classList.remove('visible');
+                segment.classList.add('tooltip-hidden');
             });
         }
 
         function showTooltip(segment, variant, tooltip) {
-            tooltip.querySelector('.bar-tooltip-name').textContent = variant.name;
-            tooltip.querySelector('.bar-tooltip-views').textContent = variant.pageviews.toLocaleString() + ' views';
+            tooltip.querySelector('.tooltip-title').textContent = variant.name;
+            tooltip.querySelector('.tooltip-text').textContent = variant.pageviews.toLocaleString() + ' views';
 
-            tooltip.classList.add('visible');
             segment.appendChild(tooltip);
+            segment.classList.remove('tooltip-hidden');
         }
 
         function renderStackedBarChart(data, container, tooltip) {
@@ -398,14 +398,14 @@
                 .then(data => renderStackedBarChart(data, container, tooltip))
                 .catch(error => {
                     console.error('Error loading chart data: ', error);
-                    container.innerHTML = '<p>Error loading chart data</p>';
+                    container.innerHTML = `<p>Error loading chart data: ${error}</p>`;
                 });
         }
 
         loadAndRenderChart(
             './data/warframes.json',
             get('.warframe-test .bar-chart-container'),
-            get('.bar-tooltip.warframe-test-tooltip')
+            get('.tooltip.warframe-test-tooltip')
         );
     }
 
