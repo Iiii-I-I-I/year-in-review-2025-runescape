@@ -33,8 +33,8 @@ body {
     --border-divider: oklch(45.99% 7% var(--base-hue));
     --border-radius: 1.2em;
     --border-inset:
-        0px 1px 0px 0px rgba(255, 255, 255, 0.08) inset,
-        0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        0px 1px 0px 0px rgba(255, 255, 255, 0.09) inset,
+        0 0 0 1px rgba(255, 255, 255, 0.07) inset;
 
     --shadow-01:
         0 30px 60px -8px rgba(50, 50, 93, .2),
@@ -627,7 +627,7 @@ section .link {
 
 .tooltip-hidden .tooltip {
     opacity: 0;
-    transform: translateX(-50%) translateY(-0.3rem);
+    transform: translateX(-50%) translateY(-0.2rem);
 }
 
 @media screen and (max-width: 600px) {
@@ -796,31 +796,31 @@ section .link {
     margin-top: .75em;
 }
 
+.bar-label {
+    flex: 1;
+    color: var(--text-01);
+    text-align: right;
+}
+
 .new .bar-label {
     color: hsl(120, 58%, 57%);
     font-weight: bold;
 }
 
-.bar-label {
-    color: var(--text-01);
-    text-align: right;
-    width: 100px;
-}
-
 .bar-container {
-    --bar-border-radius: calc(var(--border-radius) * .2);
+    --bar-border-radius: var(--border-radius);
 
     display: flex;
-    flex: 1;
+    width: 70%;
     background-color: var(--bg-02);
     border-radius: var(--bar-border-radius);
-    height: .75em;
+    height: .7em;
 }
 
 .bar-segment {
-    --variant-regular: #3b82f6;
-    --variant-prime: #ddc20d;
-    --variant-umbra: #8b5cf6;
+    --variant-regular: hsl(217, 91%, 60%);
+    --variant-prime: hsl(52, 82%, 42%);
+    --variant-umbra: hsl(258, 90%, 66%);
 
     position: relative; /* for tooltip */
     background-color: var(--segment-color);
@@ -840,8 +840,20 @@ section .link {
     --segment-color: var(--variant-umbra);
 }
 
+/* increase vertical mousehover hit area */
+.bar-segment::after {
+    content: '';
+    position: absolute;
+    top: -0.5em;
+    bottom: -0.5em;
+    left: 0;
+    right: 0;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 .bar-segment:hover {
-    background-color: oklch(from var(--segment-color) calc(l + 0.075) calc(c + 0.075) h);
+    background-color: oklch(from var(--segment-color) calc(l * 1.1) calc(c * 1.2) h);
 }
 
 .bar-segment:first-child {
@@ -854,11 +866,10 @@ section .link {
     border-bottom-right-radius: var(--bar-border-radius);
 }
 
-.total-views {
+.bar-total {
+    flex: 1;
     font-size: .9em;
     font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-    width: 100px;
 }
 
 @media screen and (max-width: 600px) {
@@ -866,12 +877,16 @@ section .link {
         display: block;
     }
 
+    .bar-container {
+        width: 100%;
+    }
+
     .bar-label {
         text-align: left;
         margin-bottom: .2em;
     }
 
-    .total-views {
+    .bar-total {
         display: none;
     }
 }

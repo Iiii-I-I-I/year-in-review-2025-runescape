@@ -304,7 +304,7 @@
     }
 
     function initBarCharts() {
-        function calculateTotalPageviews(warframe) {
+        function calculateRowTotal(warframe) {
             return warframe.variants.reduce((sum, v) => sum + v.pageviews, 0);
         }
 
@@ -317,37 +317,39 @@
         }
 
         function createBarTotal(total) {
-            const totalViews = document.createElement('div');
-            totalViews.className = 'total-views';
-            totalViews.textContent = total.toLocaleString();
+            const barTotal = document.createElement('div');
+            barTotal.className = 'bar-total';
+            barTotal.textContent = total.toLocaleString();
 
-            return totalViews;
+            return barTotal;
         }
 
-        function createBarSegment(variant, maxTotal, tooltip) {
+        function createBarSegment(variant, maxTotal) {
             const segment = document.createElement('div');
             const percentage = (variant.pageviews / maxTotal) * 100;
+            const tooltip = createTooltip(variant);
 
-            segment.className = 'bar-segment';
+            segment.classList.add('bar-segment', 'tooltip-hidden');
             segment.style.width = percentage + '%';
-            attachTooltipEvents(segment, variant, tooltip);
+            segment.appendChild(tooltip);
 
             return segment;
         }
 
-        function createBarContainer(variants, maxTotal, tooltip) {
+        function createBarContainer(variants, maxTotal) {
             const barContainer = document.createElement('div');
             barContainer.className = 'bar-container';
 
             variants.forEach(variant => {
-                const segment = createBarSegment(variant, maxTotal, tooltip);
+                const segment = createBarSegment(variant, maxTotal);
                 barContainer.appendChild(segment);
             });
 
+            attachTooltipEvents(barContainer);
             return barContainer;
         }
 
-        function createChartRow(warframe, maxTotal, tooltip) {
+        function createChartRow(warframe, maxTotal) {
             const row = document.createElement('div');
             row.className = 'chart-row';
 
@@ -355,47 +357,65 @@
                 row.classList.add('new');
             }
 
-            const total = calculateTotalPageviews(warframe);
+            const total = calculateRowTotal(warframe);
 
             row.appendChild(createBarLabel(warframe.name));
-            row.appendChild(createBarContainer(warframe.variants, maxTotal, tooltip));
+            row.appendChild(createBarContainer(warframe.variants, maxTotal));
             row.appendChild(createBarTotal(total));
 
             return row;
         }
 
-        function attachTooltipEvents(segment, variant, tooltip) {
-            segment.addEventListener('mouseenter', () => {
-                showTooltip(segment, variant, tooltip);
+        function createTooltip(variant) {
+            const tooltip = document.createElement('div');
+            const titleNode = document.createElement('div');
+            const textNode = document.createElement('div');
+
+            titleNode.classList.add('tooltip-title');
+            titleNode.textContent = variant.name;
+            textNode.classList.add('tooltip-text');
+            textNode.textContent = variant.pageviews.toLocaleString() + ' views';
+
+            tooltip.classList.add('tooltip');
+            tooltip.appendChild(titleNode);
+            tooltip.appendChild(textNode);
+
+            return tooltip;
+        }
+
+        function attachTooltipEvents(barContainer) {
+            // '.tooltip-hidden' is added/removed from the parent segment element, not the tooltip
+            barContainer.addEventListener('mouseover', (e) => {
+                let segment = e.target;
+
+                if (segment.classList.contains('bar-segment')) {
+                    segment.classList.remove('tooltip-hidden');
+                }
             });
 
-            segment.addEventListener('mouseleave', () => {
-                segment.classList.add('tooltip-hidden');
+            barContainer.addEventListener('mouseout', (e) => {
+                let segment = e.target;
+
+                if (segment.classList.contains('bar-segment')) {
+                    segment.classList.add('tooltip-hidden');
+                }
             });
         }
 
-        function showTooltip(segment, variant, tooltip) {
-            tooltip.querySelector('.tooltip-title').textContent = variant.name;
-            tooltip.querySelector('.tooltip-text').textContent = variant.pageviews.toLocaleString() + ' views';
-
-            segment.appendChild(tooltip);
-            segment.classList.remove('tooltip-hidden');
-        }
-
-        function renderStackedBarChart(data, container, tooltip) {
-            const sortedData = [...data].sort((a, b) => calculateTotalPageviews(b) - calculateTotalPageviews(a));
-            const maxTotalPageviews = Math.max(...sortedData.map(wf => calculateTotalPageviews(wf)));
+        function renderStackedBarChart(data, container) {
+            const sortedData = [...data].sort((a, b) => calculateRowTotal(b) - calculateRowTotal(a));
+            const maxTotalPageviews = Math.max(...sortedData.map(wf => calculateRowTotal(wf)));
 
             sortedData.forEach(warframe => {
-                const row = createChartRow(warframe, maxTotalPageviews, tooltip);
+                const row = createChartRow(warframe, maxTotalPageviews);
                 container.appendChild(row);
             });
         }
 
-        function loadAndRenderChart(jsonUrl, container, tooltip) {
+        function loadAndRenderChart(jsonUrl, container) {
             fetch(jsonUrl)
                 .then(response => response.json())
-                .then(data => renderStackedBarChart(data, container, tooltip))
+                .then(data => renderStackedBarChart(data, container))
                 .catch(error => {
                     console.error('Error loading chart data: ', error);
                     container.innerHTML = `<p>Error loading chart data: ${error}</p>`;
@@ -404,8 +424,7 @@
 
         loadAndRenderChart(
             './data/warframes.json',
-            get('.warframe-test .bar-chart-container'),
-            get('.tooltip.warframe-test-tooltip')
+            get('.warframe-test .bar-chart-container')
         );
     }
 
