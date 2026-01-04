@@ -683,6 +683,7 @@ section .link {
 }
 
 .updates-tile ol {
+    font-size: .9em;
     margin-top: 1.5em;
     margin-bottom: 0;
 }
@@ -792,17 +793,18 @@ section .link {
 }
 
 .chart-row + .chart-row {
-    margin-top: 1em;
+    margin-top: .75em;
 }
 
 .new .bar-label {
-    color: hsl(120, 72%, 41%);
+    color: hsl(120, 58%, 57%);
     font-weight: bold;
 }
 
 .bar-label {
-    width: 100px;
+    color: var(--text-01);
     text-align: right;
+    width: 100px;
 }
 
 .bar-container {
@@ -812,7 +814,7 @@ section .link {
     flex: 1;
     background-color: var(--bg-02);
     border-radius: var(--bar-border-radius);
-    height: 1.25em;
+    height: .75em;
 }
 
 .bar-segment {
