@@ -46,5 +46,76 @@
 			{ "name": "Nezha", "pageviews": 33000 },
 			{ "name": "Nezha Prime", "pageviews": 39000 }
 		]
+	},
+	{
+		"name": "Saryn",
+		"isNew": false,
+		"variants": [
+			{ "name": "Saryn", "pageviews": 51000 },
+			{ "name": "Saryn Prime", "pageviews": 62000 }
+		]
+	},
+	{
+		"name": "Mesa",
+		"isNew": false,
+		"variants": [
+			{ "name": "Mesa", "pageviews": 54000 },
+			{ "name": "Mesa Prime", "pageviews": 71000 }
+		]
+	},
+	{
+		"name": "Nova",
+		"isNew": false,
+		"variants": [
+			{ "name": "Nova", "pageviews": 52000 },
+			{ "name": "Nova Prime", "pageviews": 38000 }
+		]
+	},
+	{
+		"name": "Loki",
+		"isNew": false,
+		"variants": [
+			{ "name": "Loki", "pageviews": 32000 },
+			{ "name": "Loki Prime", "pageviews": 27000 }
+		]
+	},
+	{
+		"name": "Valkyr",
+		"isNew": false,
+		"variants": [
+			{ "name": "Valkyr", "pageviews": 42000 },
+			{ "name": "Valkyr Prime", "pageviews": 37000 }
+		]
+	},
+	{
+		"name": "Nekros",
+		"isNew": false,
+		"variants": [
+			{ "name": "Nekros", "pageviews": 48000 },
+			{ "name": "Nekros Prime", "pageviews": 50000 }
+		]
+	},
+	{
+		"name": "Garuda",
+		"isNew": false,
+		"variants": [
+			{ "name": "Garuda", "pageviews": 35000 },
+			{ "name": "Garuda Prime", "pageviews": 40000 }
+		]
+	},
+	{
+		"name": "Baruuk",
+		"isNew": false,
+		"variants": [
+			{ "name": "Baruuk", "pageviews": 38000 },
+			{ "name": "Baruuk Prime", "pageviews": 43000 }
+		]
+	},
+	{
+		"name": "Jade",
+		"isNew": true,
+		"variants": [
+			{ "name": "Jade", "pageviews": 78000 }
+		]
 	}
 ]
