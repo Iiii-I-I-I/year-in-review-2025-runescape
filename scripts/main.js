@@ -314,10 +314,11 @@
                 drawCallback: (dygraph, isInitial) => {
                     if (isInitial) {
                         dygraph.setAnnotations(editsAnnotations);
-                        appendTooltips(containerSelector, editsAnnotations);
                         appendXAxisLabels(containerSelector); // units are months
                         appendYAxisLabels(containerSelector, 4, 'k'); // units are thousands of edits
                     }
+
+                    appendTooltips(containerSelector, editsAnnotations);
                 },
                 axes: {
                     ...config.axes,
