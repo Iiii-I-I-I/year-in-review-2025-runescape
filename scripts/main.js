@@ -430,5 +430,5 @@
 
     initTabs();
     initGraphs();
-    initBarCharts();
+    // initBarCharts();
 }());
