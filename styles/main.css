@@ -23,12 +23,14 @@ body {
     --font-stack: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
 
     --bg-01: oklch(17.74% 12% var(--base-hue));
-    --bg-02: oklch(29.98% 10% var(--base-hue));
-    --bg-03: oklch(37.96% 9% var(--base-hue));
+    --bg-02: oklch(29.98% 9% var(--base-hue));
+    --bg-03: oklch(37.96% 8% var(--base-hue));
 
     --text-01: oklch(90.8% 1% var(--base-hue));
     --text-02: oklch(84.76% 3% var(--base-hue));
-    --text-03: oklch(66.83% 4% var(--base-hue));
+    --text-03: oklch(75.83% 4% var(--base-hue));
+
+    --text-theme: oklch(75% 25% var(--base-hue));
 
     --border-divider: oklch(45.99% 7% var(--base-hue));
     --border-radius: 1.2em;
@@ -67,11 +69,11 @@ body {
 }
 
 body.theme-rs {
-    --base-hue: 225deg;
+    --base-hue: 215deg;
 }
 
 body.theme-osrs {
-    --base-hue: 98deg;
+    --base-hue: 73deg;
 }
 
 h1 {
@@ -246,27 +248,7 @@ section + section {
 
 section h2,
 section .link {
-    color: var(--section-color, var(--text-01));
-}
-
-.section-traffic {
-    --section-color: hsl(18.65, 91.72%, 63.78%);
-}
-
-.section-community {
-    --section-color: hsl(139.76, 69.67%, 47.84%);
-}
-
-.section-updates {
-    --section-color: hsl(203.11, 100%, 70.25%);
-}
-
-.section-chart {
-    --section-color: hsl(251.14, 100%, 75.75%);
-}
-
-.section-closing {
-    --section-color: hsl(48.5, 75.9%, 64.74%);
+    color: var(--text-theme);
 }
 
 @media screen and (max-width: 900px) {
@@ -422,7 +404,7 @@ section .link {
 }
 
 .stat-value {
-    color: var(--section-color);
+    color: var(--text-theme);
     font-size: 3em;
     font-weight: 800;
     line-height: 1;
@@ -696,7 +678,7 @@ section .link {
 }
 
 .li-number {
-    font-size: .9em;
+    color: var(--text-03);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
 }
@@ -864,7 +846,7 @@ section .link {
 
 .bar-total {
     flex: 1;
-    font-size: .9em;
+    color: var(--text-03);
     font-variant-numeric: tabular-nums;
 }
 
