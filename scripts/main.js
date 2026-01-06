@@ -1,6 +1,14 @@
 (function () {
     'use strict';
 
+    // store graph instances for later re-rendering
+    const graphInstances = {
+        trafficRSW: null,
+        trafficOSW: null,
+        editsRSW: null,
+        editsOSW: null,
+    };
+
     function get(selector, scope = document) {
         return scope.querySelector(selector);
     }
@@ -55,14 +63,25 @@
             let enterDuration = 325; // needs to match --anim-slow value
             let exitDuration = 125; // needs to match --anim-fast value
 
-            // hide old panel, reveal new panel
             currPanel.classList.add('slide', `slide-${direction}-fade-out`);
 
             window.setTimeout(function () {
-                currPanel.setAttribute('hidden', '');
+                // hide old panel
+                currPanel.classList.add('panel-hidden');
                 currPanel.classList.remove('slide', `slide-${direction}-fade-out`);
-                nextPanel.removeAttribute('hidden');
+
+                // reveal new panel
+                nextPanel.classList.remove('panel-hidden');
                 nextPanel.classList.add('slide', `slide-${direction}-fade-in`);
+
+                // re-render hidden dygraph after panel becomes visible - see https://stackoverflow.com/questions/36337417/
+                if (nextTab.dataset.controls === 'panel-rs') {
+                    graphInstances.trafficRSW.resize();
+                    graphInstances.editsRSW.resize();
+                } else if (nextTab.dataset.controls === 'panel-osrs') {
+                    graphInstances.trafficOSW.resize();
+                    graphInstances.editsOSW.resize();
+                }
             }, exitDuration);
 
             window.setTimeout(function () {
@@ -238,31 +257,44 @@
             { x: "2021/10/25", text: "RuneScape: TzekHaar Front is released" },
             { x: "2021/11/25", text: "Old School: Android client beta testing begins" },
         ]);
-        const trafficGraphConfig = {
-            ...basicGraphConfig('.traffic', 'Views', 'hsl(18.65, 91.72%, 63.78%)'),
-            drawCallback: (dygraph, isInitial) => {
-                if (isInitial) {
-                    dygraph.setAnnotations(trafficAnnotations);
-                    appendTooltips('.traffic', trafficAnnotations);
-                    appendXAxisLabels('.traffic'); // units are months
-                    appendYAxisLabels('.traffic', 6, 'm'); // units are millions of pageviews
-                }
-            },
-            axes: {
-                ...config.axes,
-                y: {
-                    ...config.axes.y,
-                    valueRange: [0, 6500000],
-                    valueFormatter: createValueFormatter(config.locale)
+        const trafficGraphConfig = (containerSelector, lineColor) => {
+            return {
+                ...basicGraphConfig(containerSelector, 'Views', lineColor),
+                drawCallback: (dygraph, isInitial) => {
+                    if (isInitial) {
+                        dygraph.setAnnotations(trafficAnnotations);
+                        appendXAxisLabels(containerSelector); // units are months
+                        appendYAxisLabels(containerSelector, 6, 'm'); // units are millions of pageviews
+                    }
+
+                    appendTooltips(containerSelector, trafficAnnotations);
+                },
+                axes: {
+                    ...config.axes,
+                    y: {
+                        ...config.axes.y,
+                        valueRange: [0, 6500000],
+                        valueFormatter: createValueFormatter(config.locale)
+                    }
                 }
             }
         };
 
-        new Dygraph(
-            get('.traffic .graph'),
+        const trafficRSW = new Dygraph(
+            get('.traffic-rsw .graph'),
             './data/traffic.csv',
-            trafficGraphConfig
+            trafficGraphConfig('.traffic-rsw', 'hsl(197, 66%, 62%)')
         );
+
+        const trafficOSW = new Dygraph(
+            get('.traffic-osw .graph'),
+            './data/traffic.csv',
+            trafficGraphConfig('.traffic-osw', 'hsl(34, 57%, 61%)')
+        );
+
+        // store instances for tab switching
+        graphInstances.trafficRSW = trafficRSW;
+        graphInstances.trafficOSW = trafficOSW;
 
         // =================
         //       EDITS
@@ -276,31 +308,43 @@
             { x: "2021/10/25", text: "RuneScape: TzekHaar Front is released" },
             { x: "2021/11/25", text: "Old School: Android client beta testing begins" },
         ]);
-        const editsGraphConfig = {
-            ...basicGraphConfig('.edits', 'Edits', 'hsl(139.76, 69.67%, 47.84%)'),
-            drawCallback: (dygraph, isInitial) => {
-                if (isInitial) {
-                    dygraph.setAnnotations(editsAnnotations);
-                    appendTooltips('.edits', editsAnnotations);
-                    appendXAxisLabels('.edits'); // units are months
-                    appendYAxisLabels('.edits', 4, 'k'); // units are thousands of edits
-                }
-            },
-            axes: {
-                ...config.axes,
-                y: {
-                    ...config.axes.y,
-                    valueRange: [0, 4600],
-                    valueFormatter: createValueFormatter(config.locale)
+        const editsGraphConfig = (containerSelector, lineColor) => {
+            return {
+                ...basicGraphConfig(containerSelector, 'Edits', lineColor),
+                drawCallback: (dygraph, isInitial) => {
+                    if (isInitial) {
+                        dygraph.setAnnotations(editsAnnotations);
+                        appendTooltips(containerSelector, editsAnnotations);
+                        appendXAxisLabels(containerSelector); // units are months
+                        appendYAxisLabels(containerSelector, 4, 'k'); // units are thousands of edits
+                    }
+                },
+                axes: {
+                    ...config.axes,
+                    y: {
+                        ...config.axes.y,
+                        valueRange: [0, 4600],
+                        valueFormatter: createValueFormatter(config.locale)
+                    }
                 }
             }
         };
 
-        new Dygraph(
-            get('.edits .graph'),
+        const editsRSW = new Dygraph(
+            get('.edits-rsw .graph'),
             './data/edits.csv',
-            editsGraphConfig
+            editsGraphConfig('.edits-rsw', 'hsl(197, 66%, 62%)')
         );
+
+        const editsOSW = new Dygraph(
+            get('.edits-osw .graph'),
+            './data/edits.csv',
+            editsGraphConfig('.edits-osw', 'hsl(34, 57%, 61%)')
+        );
+
+        // store instances for tab switching
+        graphInstances.editsRSW = editsRSW;
+        graphInstances.editsOSW = editsOSW;
     }
 
     function initBarCharts() {

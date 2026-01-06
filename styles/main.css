@@ -340,6 +340,10 @@ section .link {
     animation-timing-function: var(--ease-in-out-quad);
 }
 
+.panel-hidden {
+    display: none;
+}
+
 /* added via slideTabPanels() in main.js */
 .slide-left-fade-in {
     animation-name: enter-left, fade-in;
@@ -479,7 +483,7 @@ section .link {
     color: var(--text-01);
     font-size: 1.1em;
     font-weight: bold;
-    margin: 0 0 .25em;
+    margin: 0 0 .25em var(--range-pad);
 }
 
 .graph-legend {
@@ -534,11 +538,13 @@ section .link {
     justify-content: flex-end;
 }
 
-.traffic .y-label {
+.traffic-rsw .y-label,
+.traffic-osw .y-label {
     height: calc(var(--graph-height) / 6.5); /* divide by number of y-axis units */
 }
 
-.edits .y-label {
+.edits-rsw .y-label,
+.edits-osw .y-label {
     height: calc(var(--graph-height) / 4.6); /* divide by number of y-axis units */
 }
 
