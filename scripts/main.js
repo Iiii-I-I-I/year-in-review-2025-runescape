@@ -236,9 +236,20 @@
                 const tooltip = createTooltip(annotation.x, annotation.text);
                 const annotationEl = get(`${containerSelector} .annotation-${i + 1}`);
 
-                if (annotationEl && !annotationEl.contains(tooltip)) {
+                if (annotationEl && !annotationEl.contains(get('.tooltip', annotationEl))) {
                     annotationEl.appendChild(tooltip);
                     annotationEl.removeAttribute('title');
+                }
+
+                // check if tooltip overflows viewport
+                if (tooltip) {
+                    const rect = tooltip.getBoundingClientRect();
+
+                    if (rect.right > window.innerWidth) {
+                        tooltip.classList.add('tooltip-overflow-right');
+                    } else if (rect.left < 0) {
+                        tooltip.classList.add('tooltip-overflow-left');
+                    }
                 }
             });
         }

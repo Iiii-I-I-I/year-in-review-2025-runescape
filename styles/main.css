@@ -569,9 +569,7 @@ section .link {
     --tooltip-arrow-width: 10px;
 
     position: absolute;
-    left: 50%;
     bottom: calc(100% + var(--tooltip-arrow-width) + 2px); /* 2px gap between annotation and tooltip */
-    transform: translateX(-50%);
     transition: .25s var(--ease-out-quad);
     z-index: 2;
     opacity: 1;
@@ -598,6 +596,23 @@ section .link {
     left: calc(50% - var(--tooltip-arrow-width)); /* center arrow under tooltip */
 }
 
+.tooltip-overflow-left {
+    left: -50%;
+}
+
+.tooltip-overflow-left::before {
+    left: initial;
+}
+
+.tooltip-overflow-right {
+    right: -100%;
+}
+
+.tooltip-overflow-right::before {
+    left: initial;
+    right: 13%;
+}
+
 .bar-chart-container .tooltip {
     width: fit-content;
     white-space: nowrap;
@@ -611,7 +626,7 @@ section .link {
 
 .tooltip-hidden .tooltip {
     opacity: 0;
-    transform: translateX(-50%) translateY(-0.2rem);
+    transform: translateY(-0.2rem);
 }
 
 @media screen and (max-width: 600px) {
@@ -635,7 +650,6 @@ section .link {
 @media screen and (max-width: 800px) {
     .graph-container {
         padding: 1.5em;
-        overflow-x: hidden; /* quick (bad) fix for annotation going offscreen on mobile */
     }
 
     .graph-legend {
