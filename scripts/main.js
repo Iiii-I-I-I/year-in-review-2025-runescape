@@ -256,18 +256,18 @@
         const trafficAnnotationsRSW = createAnnotations('Pageviews', [
             { x: "2025/01/14", text: "Beneath Scabaras' Sands quest is released" },
             { x: "2025/02/21", text: "Double XP event begins" },
-            { x: "2025/03/03", text: "110 Runecrafting is released" },
+            { x: "2025/03/03", text: "110 Runecrafting is released", tickHeight: 45 },
             { x: "2025/05/12", text: "Augmented Runecrafting and Thieving are released" },
             { x: "2025/07/28", text: "Eclipse of the Heart quest is released" },
-            { x: "2025/09/15", text: "Catalyst League begins", tickHeight: 140 },
+            { x: "2025/09/15", text: "Catalyst League begins", tickHeight: 130 },
             { x: "2025/11/24", text: "120 Thieving and Heists are released" },
         ]);
         const trafficAnnotationsOSW = createAnnotations('Pageviews', [
-            { x: "2025/01/22", text: "Raging Echoes League ends (started Nov. 2024)" },
+            { x: "2025/01/22", text: "Raging Echoes League ends (began Nov 2024)" },
             { x: "2025/02/05", text: "Royal Titans duo boss is released" },
-            { x: "2025/05/14", text: "Yama duo boss is released" },
+            { x: "2025/05/14", text: "Yama duo boss is released", tickHeight: 30 },
             { x: "2025/06/23", text: "Twitch streamers Savix and Sodapoppin begin playing OSRS" },
-            { x: "2025/07/23", text: "Varlamore: The Final Dawn is released" },
+            { x: "2025/07/23", text: "Varlamore: The Final Dawn is released", tickHeight: 40 },
             { x: "2025/10/15", text: "Grid Master community event begins", tickHeight: 120 },
             { x: "2025/11/19", text: "Sailing skill is released", tickHeight: 140 },
         ]);
