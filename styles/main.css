@@ -706,11 +706,10 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
     image-rendering: crisp-edges;
 }
 
-/* TODO: create downrezzed jpgs of background images */
 .eclipse-of-the-heart::before {
     background-image:
         var(--upper-gradient),
-        url('https://runescape.wiki/images/Eclipse_of_the_Heart_-_Gathered_Forces.png?f299e');
+        url('../images/bg/Eclipse-of-the-Heart.jpg');
     background-position: 20%;
     background-size: cover;
 }
@@ -718,7 +717,7 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
 .catalyst-league::before {
     background-image:
         var(--upper-gradient),
-        url('https://runescape.wiki/images/Stone_of_Jas_Steam_trading_card_wallpaper.jpg?e9d8e');
+        url('../images/bg/Stone-of-Jas.jpg');
     background-position: center;
     background-size: cover;
 }
@@ -726,14 +725,14 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
 .grid-master::before {
     background-image:
         var(--upper-gradient),
-        url('https://oldschool.runescape.wiki/images/Main_page_-_Grid_Master_-_Out_Today%21.png?e62fb');
+        url('../images/bg/Grid-Master.jpg');
     background-position: left;
 }
 
 .sailing::before {
     background-image:
         var(--upper-gradient),
-        url('https://oldschool.runescape.wiki/images/The_Pandemonium.png?c2470');
+        url('../images/bg/The-Pandemonium.jpg');
     background-position: 0% 35%;
 }
 
