@@ -475,6 +475,8 @@ section .link {
 
 .graph {
     --graph-height: 300px;
+
+    margin-top: 1em;
 }
 
 .graph-title {

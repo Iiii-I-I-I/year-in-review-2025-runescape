@@ -104,6 +104,7 @@
                 y: {
                     drawAxis: true,
                     includeZero: true,
+                    pixelsPerLabel: 40,
                     axisLineColor: 'transparent',
                     axisLabelWidth: 0,
                 }
@@ -313,30 +314,28 @@
         //       EDITS
         // =================
 
-        const editsAnnotations = createAnnotations('Edits', [
-            { x: "2021/01/04", text: "RuneScape's 20th anniversary events begin" },
-            { x: "2021/02/22", text: "RuneScape: Azzanadra's Quest is released" },
-            { x: "2021/07/26", text: "RuneScape: Nodon Front is released" },
-            { x: "2021/08/18", text: "Is this annotation too high?", tickHeight: 180 },
-            { x: "2021/10/25", text: "RuneScape: TzekHaar Front is released" },
-            { x: "2021/11/25", text: "Old School: Android client beta testing begins" },
+        const editsAnnotationsRSW = createAnnotations('Edits', [
+            { x: "2025/03/15", text: "Example annotation" },
         ]);
-        const editsGraphConfig = (containerSelector, lineColor) => {
+        const editsAnnotationsOSW = createAnnotations('Edits', [
+            { x: "2025/03/15", text: "Example annotation" },
+        ]);
+        const editsGraphConfig = (containerSelector, yAxisRange, annotations, lineColor) => {
             return {
                 ...basicGraphConfig(containerSelector, 'Edits', lineColor),
                 drawCallback: (dygraph, isInitial) => {
                     if (isInitial) {
-                        dygraph.setAnnotations(editsAnnotations);
+                        dygraph.setAnnotations(annotations);
                         appendXAxisLabels(containerSelector);
                     }
 
-                    appendTooltips(containerSelector, editsAnnotations);
+                    appendTooltips(containerSelector, annotations);
                 },
                 axes: {
                     ...config.axes,
                     y: {
                         ...config.axes.y,
-                        valueRange: [0, 4600],
+                        valueRange: [0, yAxisRange],
                         valueFormatter: createValueFormatter(config.locale)
                     }
                 }
@@ -345,14 +344,14 @@
 
         const editsRSW = new Dygraph(
             get('.edits-rsw .graph'),
-            './data/edits.csv',
-            editsGraphConfig('.edits-rsw', 'hsl(197, 66%, 62%)')
+            './data/edits-rsw.csv',
+            editsGraphConfig('.edits-rsw', 2100, editsAnnotationsRSW, 'hsl(197, 66%, 62%)')
         );
 
         const editsOSW = new Dygraph(
             get('.edits-osw .graph'),
-            './data/edits.csv',
-            editsGraphConfig('.edits-osw', 'hsl(34, 57%, 61%)')
+            './data/edits-osw.csv',
+            editsGraphConfig('.edits-osw', 5100, editsAnnotationsOSW, 'hsl(34, 57%, 61%)')
         );
 
         // store instances for tab switching
