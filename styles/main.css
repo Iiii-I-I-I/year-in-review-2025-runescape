@@ -599,11 +599,6 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
     right: 13%;
 }
 
-.bar-chart-container .tooltip {
-    width: fit-content;
-    white-space: nowrap;
-}
-
 .tooltip-title {
     color: var(--text-01);
     font-weight: bold;
@@ -749,124 +744,6 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
 
     .li-number::after {
         content: ' views';
-    }
-}
-
-/* --------------
-       CHART
-   -------------- */
-
-.bar-chart-container {
-    --variant-regular: #3b82f6;
-    --variant-prime: #ddc20d;
-    --variant-umbra: #8b5cf6;
-
-    font-size: .9em;
-    margin: 1.75em 0 1.5em;
-}
-
-.chart-row {
-    display: flex;
-    align-items: center;
-    gap: 1em;
-}
-
-.chart-row + .chart-row {
-    margin-top: .75em;
-}
-
-.bar-label {
-    flex: 1;
-    color: var(--text-01);
-    text-align: right;
-}
-
-.new .bar-label {
-    color: hsl(120, 58%, 57%);
-    font-weight: bold;
-}
-
-.bar-container {
-    --bar-border-radius: var(--border-radius);
-
-    display: flex;
-    width: 70%;
-    background-color: var(--bg-02);
-    border-radius: var(--bar-border-radius);
-    height: .7em;
-}
-
-.bar-segment {
-    --variant-regular: hsl(217, 91%, 60%);
-    --variant-prime: hsl(52, 82%, 42%);
-    --variant-umbra: hsl(258, 90%, 66%);
-
-    position: relative; /* for tooltip */
-    background-color: var(--segment-color);
-    box-shadow: var(--border-inset);
-    transition: background-color var(--anim-med) var(--ease-in-out-quad);
-}
-
-.bar-segment:nth-child(1) {
-    --segment-color: var(--variant-regular);
-}
-
-.bar-segment:nth-child(2) {
-    --segment-color: var(--variant-prime);
-}
-
-.bar-segment:nth-child(3) {
-    --segment-color: var(--variant-umbra);
-}
-
-/* increase vertical mousehover hit area */
-.bar-segment::after {
-    content: '';
-    position: absolute;
-    top: -0.5em;
-    bottom: -0.5em;
-    left: 0;
-    right: 0;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-.bar-segment:hover {
-    background-color: oklch(from var(--segment-color) calc(l * 1.1) calc(c * 1.2) h);
-}
-
-.bar-segment:first-child {
-    border-top-left-radius: var(--bar-border-radius);
-    border-bottom-left-radius: var(--bar-border-radius);
-}
-
-.bar-segment:last-child {
-    border-top-right-radius: var(--bar-border-radius);
-    border-bottom-right-radius: var(--bar-border-radius);
-}
-
-.bar-total {
-    flex: 1;
-    color: var(--text-03);
-    font-variant-numeric: tabular-nums;
-}
-
-@media screen and (max-width: 600px) {
-    .chart-row {
-        display: block;
-    }
-
-    .bar-container {
-        width: 100%;
-    }
-
-    .bar-label {
-        text-align: left;
-        margin-bottom: .2em;
-    }
-
-    .bar-total {
-        display: none;
     }
 }
 
