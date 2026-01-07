@@ -459,7 +459,7 @@ section .link {
    -------------- */
 
 .graph-container {
-    --range-pad: 7px; /* must be >= xRangePad option for dygraph in main.js */
+    --range-pad: 7px;
 
     background-color: var(--bg-03);
     border-radius: var(--border-radius);
@@ -475,8 +475,6 @@ section .link {
 
 .graph {
     --graph-height: 300px;
-
-    position: relative; /* for .graph-y-labels */
 }
 
 .graph-title {
@@ -520,32 +518,18 @@ section .link {
     display: none;
 }
 
-.graph-y-labels {
-    font-size: .75em;
+.dygraph-axis-label-y {
     color: var(--text-03);
     letter-spacing: .05ch;
+    text-transform: lowercase;
     opacity: .8;
-
-    position: absolute;
     pointer-events: none;
-    bottom: 0;
-    right: var(--range-pad);
+    transform: translateX(.5ch) translateY(-1.75ch);
 }
 
-.y-label {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-}
-
-.traffic-rsw .y-label,
-.traffic-osw .y-label {
-    height: calc(var(--graph-height) / 6.5); /* divide by number of y-axis units */
-}
-
-.edits-rsw .y-label,
-.edits-osw .y-label {
-    height: calc(var(--graph-height) / 4.6); /* divide by number of y-axis units */
+/* fix 0's position */
+div[style*="bottom: 0px"] .dygraph-axis-label-y {
+    transform: translateX(.5ch) translateY(0);
 }
 
 .dygraph-annotation {
@@ -641,10 +625,6 @@ section .link {
     .long-month {
         display: none;
     }
-
-    .traffic .y-label {
-        height: calc(250px / 6.5);
-    }
 }
 
 @media screen and (max-width: 800px) {
@@ -681,7 +661,7 @@ section .link {
 }
 
 .update-tile ol {
-    font-size: .9em;
+    font-size: .95em;
     margin-top: 2em;
     margin-bottom: 0;
 }

@@ -97,8 +97,16 @@
             dateOptions: { day: 'numeric', month: 'long', year: 'numeric' },
             gridColor: 'hsl(210, 0%, 40%)',
             axes: {
-                x: { drawAxis: false, drawGrid: false },
-                y: { drawAxis: false, includeZero: true }
+                x: {
+                    drawAxis: false,
+                    drawGrid: false
+                },
+                y: {
+                    drawAxis: true,
+                    includeZero: true,
+                    axisLineColor: 'transparent',
+                    axisLabelWidth: 0,
+                }
             }
         };
         const touchInteractionModel = {
@@ -142,7 +150,7 @@
                 gridLineColor: config.gridColor,
                 gridLineWidth: 1,
                 highlightCircleSize: 5,
-                xRangePad: 4,
+                labelsKMB: true,
                 labelsDiv: get(`${containerSelector} .graph-legend`),
                 rollPeriod: 7,
                 fillGraph: true,
@@ -172,21 +180,6 @@
                 labelNode.appendChild(longLabel);
                 xAxisLabels.appendChild(labelNode);
             }
-        }
-
-        function appendYAxisLabels(containerSelector, maxValue, unit) {
-            const yAxisLabels = document.createElement('div');
-
-            yAxisLabels.classList.add('graph-y-labels');
-
-            for (let i = maxValue; i >= 0; i--) {
-                const viewLabel = document.createElement('div');
-                viewLabel.classList.add('y-label');
-                viewLabel.textContent = i + (i !== 0 ? unit : '');
-                yAxisLabels.appendChild(viewLabel);
-            }
-
-            get(`${containerSelector} .graph`).appendChild(yAxisLabels);
         }
 
         function createValueFormatter(locale) {
@@ -284,8 +277,7 @@
                 drawCallback: (dygraph, isInitial) => {
                     if (isInitial) {
                         dygraph.setAnnotations(annotations);
-                        appendXAxisLabels(containerSelector); // units are months
-                        // appendYAxisLabels(containerSelector, 6, 'm'); // units are millions of pageviews
+                        appendXAxisLabels(containerSelector);
                     }
 
                     appendTooltips(containerSelector, annotations);
@@ -335,8 +327,7 @@
                 drawCallback: (dygraph, isInitial) => {
                     if (isInitial) {
                         dygraph.setAnnotations(editsAnnotations);
-                        appendXAxisLabels(containerSelector); // units are months
-                        appendYAxisLabels(containerSelector, 4, 'k'); // units are thousands of edits
+                        appendXAxisLabels(containerSelector);
                     }
 
                     appendTooltips(containerSelector, editsAnnotations);
