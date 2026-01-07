@@ -95,7 +95,7 @@
         const config = {
             locale: 'en-GB',
             dateOptions: { day: 'numeric', month: 'long', year: 'numeric' },
-            gridColor: 'hsl(210, 15.94%, 38.5%)',
+            gridColor: 'hsl(210, 0%, 40%)',
             axes: {
                 x: { drawAxis: false, drawGrid: false },
                 y: { drawAxis: false, includeZero: true }
@@ -247,33 +247,29 @@
         //      TRAFFIC
         // =================
 
-        const trafficAnnotations = createAnnotations('Pageviews', [
-            { x: "2021/01/04", text: "RuneScape's 20th anniversary events begin" },
-            { x: "2021/02/22", text: "RuneScape: Azzanadra's Quest is released" },
-            { x: "2021/05/26", text: "Old School: Clans system is released" },
-            { x: "2021/06/16", text: "Old School: A Kingdom Divided is released" },
-            { x: "2021/07/26", text: "RuneScape: Nodon Front is released" },
-            { x: "2021/10/06", text: "Old School: Group Ironman Mode is released", tickHeight: 33 },
-            { x: "2021/10/25", text: "RuneScape: TzekHaar Front is released" },
-            { x: "2021/11/25", text: "Old School: Android client beta testing begins" },
+        const trafficAnnotationsRSW = createAnnotations('Pageviews', [
+            { x: "2025/01/01", text: "Example annotation" },
         ]);
-        const trafficGraphConfig = (containerSelector, lineColor) => {
+        const trafficAnnotationsOSW = createAnnotations('Pageviews', [
+            { x: "2025/01/01", text: "Example annotation" },
+        ]);
+        const trafficGraphConfig = (containerSelector, yAxisRange, annotations, lineColor) => {
             return {
                 ...basicGraphConfig(containerSelector, 'Views', lineColor),
                 drawCallback: (dygraph, isInitial) => {
                     if (isInitial) {
-                        dygraph.setAnnotations(trafficAnnotations);
+                        dygraph.setAnnotations(annotations);
                         appendXAxisLabels(containerSelector); // units are months
-                        appendYAxisLabels(containerSelector, 6, 'm'); // units are millions of pageviews
+                        // appendYAxisLabels(containerSelector, 6, 'm'); // units are millions of pageviews
                     }
 
-                    appendTooltips(containerSelector, trafficAnnotations);
+                    appendTooltips(containerSelector, annotations);
                 },
                 axes: {
                     ...config.axes,
                     y: {
                         ...config.axes.y,
-                        valueRange: [0, 6500000],
+                        valueRange: [0, yAxisRange],
                         valueFormatter: createValueFormatter(config.locale)
                     }
                 }
@@ -282,14 +278,14 @@
 
         const trafficRSW = new Dygraph(
             get('.traffic-rsw .graph'),
-            './data/traffic.csv',
-            trafficGraphConfig('.traffic-rsw', 'hsl(197, 66%, 62%)')
+            './data/traffic-rsw.csv',
+            trafficGraphConfig('.traffic-rsw', 5000000, trafficAnnotationsRSW, 'hsl(197, 66%, 62%)')
         );
 
         const trafficOSW = new Dygraph(
             get('.traffic-osw .graph'),
-            './data/traffic.csv',
-            trafficGraphConfig('.traffic-osw', 'hsl(34, 57%, 61%)')
+            './data/traffic-osw.csv',
+            trafficGraphConfig('.traffic-osw', 10000000, trafficAnnotationsOSW, 'hsl(34, 57%, 61%)')
         );
 
         // store instances for tab switching
