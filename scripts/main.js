@@ -306,6 +306,15 @@
             trafficGraphConfig('.traffic-osw', 10000000, trafficAnnotationsOSW, 'hsl(34, 57%, 61%)')
         );
 
+        // graph width sometimes overflows container on load; try redrawing again after it appears
+        trafficRSW.ready(function () {
+            trafficRSW.resize();
+        });
+
+        trafficOSW.ready(function () {
+            trafficOSW.resize();
+        });
+
         // store instances for tab switching
         graphInstances.trafficRSW = trafficRSW;
         graphInstances.trafficOSW = trafficOSW;
@@ -353,6 +362,15 @@
             './data/edits-osw.csv',
             editsGraphConfig('.edits-osw', 5100, editsAnnotationsOSW, 'hsl(34, 57%, 61%)')
         );
+
+        // graph width sometimes overflows container on load; try redrawing again after it appears
+        editsRSW.ready(function () {
+            editsRSW.resize();
+        });
+
+        editsOSW.ready(function () {
+            editsOSW.resize();
+        });
 
         // store instances for tab switching
         graphInstances.editsRSW = editsRSW;
