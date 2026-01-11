@@ -735,6 +735,22 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
     image-rendering: crisp-edges;
 }
 
+.panel-rs .most-visited::before {
+    background-image:
+        var(--upper-gradient),
+        url('../images/bg/Deep-Sea-Fishing.jpg');
+    background-position: 20%;
+    background-size: cover;
+}
+
+.panel-osrs .most-visited::before {
+    background-image:
+        var(--upper-gradient),
+        url('../images/bg/Royal-Titans.jpg');
+    background-position: 0%;
+    background-size: cover;
+}
+
 .eclipse-of-the-heart::before {
     background-image:
         var(--upper-gradient),
