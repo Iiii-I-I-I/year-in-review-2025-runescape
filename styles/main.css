@@ -710,6 +710,12 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
     content: ' views';
 }
 
+.update-note {
+    color: var(--text-03);
+    font-size: .85em;
+    margin-top: 1.75em;
+}
+
 /* background images */
 .update-tile::before {
     --upper-gradient: linear-gradient(120deg, var(--bg-03) 45%, transparent);
