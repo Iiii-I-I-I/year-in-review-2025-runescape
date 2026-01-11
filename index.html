@@ -19,7 +19,7 @@
     <script src="scripts/focus-visible.min.js" defer></script>
     <script src="scripts/main.js" defer></script>
 </head>
-<body class="theme-rs">
+<body class="theme-osrs">
     <header>
         <h1 class="title">
             <span class="title-bottom">
@@ -43,13 +43,13 @@
         <p>As you scroll, you can use the buttons below to switch between statistics displayed for the <strong>RuneScape Wiki</strong> and the <strong>Old School RuneScape Wiki</strong>.</p>
 
         <div class="tab-switcher" role="tablist" style="--index: 0">
-            <button class="tab tab-rs" aria-selected="true" data-theme="theme-rs" data-controls="panel-rs">
-                <span class="label-long">RuneScape</span>
-                <span class="label-short">RS</span>
-            </button>
-            <button class="tab tab-osrs" aria-selected="false" data-theme="theme-osrs" data-controls="panel-osrs">
+            <button class="tab tab-osrs" aria-selected="true" data-theme="theme-osrs" data-controls="panel-osrs">
                 <span class="label-long">Old School</span>
                 <span class="label-short">OSRS</span>
+            </button>
+            <button class="tab tab-rs" aria-selected="false" data-theme="theme-rs" data-controls="panel-rs">
+                <span class="label-long">RuneScape</span>
+                <span class="label-short">RS</span>
             </button>
         </div>
 
@@ -60,7 +60,7 @@
             <p>Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a <a class="link" target="_blank" rel="noopener" title="20th Anniversary event" href="https://oldschool.runescape.wiki/w/20th_Anniversary_event">video games</a>, venenatis vitae, justo. We've annotated some of the more notable surges in traffic on the graph below.</p>
 
             <div class="tab-container">
-                <div class="tab-panel panel-rs" data-controlledby="tab-rs">
+                <div class="tab-panel panel-rs panel-hidden" data-controlledby="tab-rs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="graph-container traffic-rsw">
                         <div class="graph-title">Daily pageviews <span style="color: var(--text-03)">(7-day rolling avg.)</span></div>
@@ -83,7 +83,7 @@
                     </div>
                 </div>
 
-                <div class="tab-panel panel-osrs panel-hidden" data-controlledby="tab-osrs">
+                <div class="tab-panel panel-osrs" data-controlledby="tab-osrs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="graph-container traffic-osw">
                         <div class="graph-title">Daily pageviews <span style="color: var(--text-03)">(7-day rolling avg.)</span></div>
@@ -115,7 +115,7 @@
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia ante urna, eu condimentum quam sagittis vitae.</p>
 
             <div class="tab-container">
-                <div class="tab-panel panel-rs" data-controlledby="tab-rs">
+                <div class="tab-panel panel-rs panel-hidden" data-controlledby="tab-rs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
 
                     <div class="update-tile eclipse-of-the-heart">
@@ -259,7 +259,7 @@
                     </div>
                 </div>
 
-                <div class="tab-panel panel-osrs panel-hidden" data-controlledby="tab-osrs">
+                <div class="tab-panel panel-osrs" data-controlledby="tab-osrs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
 
                     <div class="update-tile grid-master">
@@ -412,7 +412,7 @@
             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
 
             <div class="tab-container">
-                <div class="tab-panel panel-rs" data-controlledby="tab-rs">
+                <div class="tab-panel panel-rs panel-hidden" data-controlledby="tab-rs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="graph-container edits-rsw">
                         <div class="graph-title">Daily edits <span style="color: var(--text-03)">(7-day rolling avg.)</span></div>
@@ -445,7 +445,7 @@
                     </div>
                 </div>
 
-                <div class="tab-panel panel-osrs panel-hidden" data-controlledby="tab-osrs">
+                <div class="tab-panel panel-osrs" data-controlledby="tab-osrs">
                     <div class="tab-switcher-note">← Use top buttons to switch between wikis →</div>
                     <div class="graph-container edits-osw">
                         <div class="graph-title">Daily edits <span style="color: var(--text-03)">(7-day rolling avg.)</span></div>

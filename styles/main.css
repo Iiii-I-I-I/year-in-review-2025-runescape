@@ -1,4 +1,15 @@
 /* ------------
+       FONTS
+   ------------ */
+
+@font-face {
+    font-family: 'Albertus Nova';
+    src: url('../styles/AlbertusNova-Bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* ------------
       BASICS
    ------------ */
 
@@ -21,6 +32,7 @@ html {
 
 body {
     --font-stack: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica', sans-serif;
+    --header-font-stack: 'Albertus Nova', 'Garamond', 'Cochin', 'Georgia', 'Times', 'Times New Roman', serif;
 
     --bg-01: oklch(17.74% 12% var(--base-hue));
     --bg-02: oklch(29.98% 9% var(--base-hue));
@@ -76,11 +88,16 @@ body.theme-osrs {
     --base-hue: 76deg;
 }
 
+h1,
+h2,
+h3 {
+    font-family: var(--header-font-stack);
+}
+
 h1 {
     color: var(--text-01);
     font-weight: 800;
     letter-spacing: -0.02em;
-    line-height: 1;
     margin: 0;
 }
 
@@ -89,6 +106,7 @@ h2 {
     font-size: 2em;
     font-weight: 700;
     line-height: 1.2;
+    letter-spacing: .02ch;
     margin: 0 0 1.25rem;
 }
 
@@ -97,6 +115,7 @@ h3 {
     color: var(--text-01);
     font-weight: 700;
     line-height: 1.2;
+    letter-spacing: .03ch;
     margin: 0 0 1rem;
 }
 
@@ -174,21 +193,22 @@ header {
 
 .title-top {
     color: var(--text-01);
-    font-size: calc(var(--header-size) * 1.22);
+    font-size: calc(var(--header-size) * 1.175);
     font-weight: 700;
     letter-spacing: .01em;
 }
 
 .title-center {
     color: transparent;
-    background-image: linear-gradient(to right, #d3953a 15%, #78b119 40%, #51a2d4 70%, #587de4 90%);
+    /* background-image: linear-gradient(to right, #d3953a 15%, #78b119 40%, #51a2d4 70%, #587de4 90%); */
+    background-image: linear-gradient(to right, #dea550 25%, #5eaee0 75.63%);
     -webkit-background-clip: text;
     background-clip: text;
 
     font-size: calc(var(--header-size) * 3.5);
     font-weight: 850;
     letter-spacing: -0.02em;
-    margin: -0.05em 0;
+    margin: -0.35em 0 -0.45em;
 }
 
 .title-bottom {
@@ -409,6 +429,7 @@ section .link {
 
 .stat-value {
     color: var(--text-theme);
+    font-family: var(--header-font-stack);
     font-size: 2.5em;
     font-weight: 800;
     line-height: 1;
@@ -435,7 +456,11 @@ section .link {
     }
 
     .stat {
-        padding: 1.25em 1.5em;
+        padding: 1.75em 1.5em 1.25em;
+    }
+
+    .stat-description {
+        margin-top: .5em;
     }
 
     .stat dt {
@@ -651,6 +676,7 @@ div[style*="bottom: 0px"] .dygraph-axis-label-y {
 
 .byline {
     color: var(--text-03);
+    margin-bottom: .2em;
 }
 
 .update-tile > * {
