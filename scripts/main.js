@@ -315,10 +315,10 @@
         // =================
 
         const editsAnnotationsRSW = createAnnotations('Edits', [
-            { x: "2025/03/15", text: "Example annotation" },
+            // { x: "2025/03/15", text: "Example annotation" },
         ]);
         const editsAnnotationsOSW = createAnnotations('Edits', [
-            { x: "2025/03/15", text: "Example annotation" },
+            // { x: "2025/03/15", text: "Example annotation" },
         ]);
         const editsGraphConfig = (containerSelector, yAxisRange, annotations, lineColor) => {
             return {

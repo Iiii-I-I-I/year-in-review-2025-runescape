@@ -129,7 +129,7 @@ strong {
 }
 
 .link {
-    color: hsl(203.11, 100%, 70.25%);
+    color: var(--text-theme);
     text-decoration: none;
     cursor: pointer; /* for non-<a> links */
 }
